@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursos | Web Dev Jrs Portugal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Web Dev Jrs Portugal"><img class="brand-banner" src="assets/images/community-name.png" alt="Web Dev Jrs Portugal"></a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
+      <nav id="siteNav" class="site-nav" aria-label="Navegação principal">
+        <a href="index.html" data-path="index.html">Início</a>
+        <a href="desafios.html" data-path="desafios.html">Desafios</a>
+        <a href="projetos.html" data-path="projetos.html">Projetos</a>
+        <a href="recursos.html" data-path="recursos.html">Recursos</a>
+        <a href="comunidade.html" data-path="comunidade.html">Comunidade</a>
+        <a href="sobre.html" data-path="sobre.html">Sobre</a>
+        <a class="nav-cta" href="comunidade.html">Entrar</a>
+      </nav>
+      <div class="language-switch">
+        <label class="sr-only" for="languageSelect">Idioma</label>
+        <select id="languageSelect" class="language-select" aria-label="Selecionar idioma">
+          <option value="pt">PT</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <div class="container page-stack">
+      <section class="hero">
+        <p class="eyebrow">Resource Library</p>
+        <h1>Biblioteca de recursos</h1>
+        <p>
+          Coleção de links e guias recomendados para acelerar estudo, praticar fundamentos
+          e ganhar consistência no desenvolvimento web.
+        </p>
+        <div class="inline-list">
+          <span class="chip">HTML</span>
+          <span class="chip">CSS</span>
+          <span class="chip">JavaScript</span>
+          <span class="chip">Backend</span>
+          <span class="chip">Carreira</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Recursos recomendados</h2>
+          <a href="comunidade.html">Sugerir recurso</a>
+        </div>
+        <div id="resourcesGrid" class="grid three-col"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Web Dev Jrs Portugal. Comunidade de programação para evolução contínua.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

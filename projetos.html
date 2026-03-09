@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projetos | Web Dev Jrs Portugal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Web Dev Jrs Portugal"><img class="brand-banner" src="assets/images/community-name.png" alt="Web Dev Jrs Portugal"></a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
+      <nav id="siteNav" class="site-nav" aria-label="Navegação principal">
+        <a href="index.html" data-path="index.html">Início</a>
+        <a href="desafios.html" data-path="desafios.html">Desafios</a>
+        <a href="projetos.html" data-path="projetos.html">Projetos</a>
+        <a href="recursos.html" data-path="recursos.html">Recursos</a>
+        <a href="comunidade.html" data-path="comunidade.html">Comunidade</a>
+        <a href="sobre.html" data-path="sobre.html">Sobre</a>
+        <a class="nav-cta" href="comunidade.html">Entrar</a>
+      </nav>
+      <div class="language-switch">
+        <label class="sr-only" for="languageSelect">Idioma</label>
+        <select id="languageSelect" class="language-select" aria-label="Selecionar idioma">
+          <option value="pt">PT</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <div class="container page-stack">
+      <section class="hero">
+        <p class="eyebrow">Project Gallery</p>
+        <h1>Projetos da comunidade</h1>
+        <p>
+          Galeria curada de projetos criados por membros. Usa filtros para analisar stacks,
+          arquitetura e padroes de implementacao.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="kpi-row">
+          <article class="kpi-card">
+            <span class="muted">Total de projetos</span>
+            <strong id="projectsTotal">0</strong>
+          </article>
+          <article class="kpi-card">
+            <span class="muted">Em destaque</span>
+            <strong id="projectsFeatured">0</strong>
+          </article>
+          <article class="kpi-card">
+            <span class="muted">Autores ativos</span>
+            <strong id="projectsAuthors">0</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Explorar projetos</h2>
+          <a href="comunidade.html">Pedir feedback</a>
+        </div>
+
+        <div class="filters" role="group" aria-label="Filtrar projetos">
+          <button class="filter-btn active" type="button" data-project-filter="all">Todos</button>
+          <button class="filter-btn" type="button" data-project-filter="frontend">Frontend</button>
+          <button class="filter-btn" type="button" data-project-filter="backend">Backend</button>
+          <button class="filter-btn" type="button" data-project-filter="fullstack">Fullstack</button>
+        </div>
+
+        <div id="projectsGrid" class="grid three-col"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Web Dev Jrs Portugal. Comunidade de programação para evolução contínua.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

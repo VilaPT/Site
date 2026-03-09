@@ -1,0 +1,1 @@
+[config] JWT_SECRET is using the default dev value. Replace it before any shared deployment.
