@@ -1,68 +1,73 @@
 <!doctype html>
 <html lang="pt-PT">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b555d">
-  <meta name="description" content="Faz Já. Precisas. Encontras. Está feito.">
-  <title>Faz Já | Precisas. Encontras. Está feito.</title>
-  <style>
-    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#f5f7f6;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10181a}.loading{min-height:100dvh;display:grid;place-items:center;text-align:center;padding:30px}.mark{width:62px;height:62px;border-radius:22px;background:#0b555d;color:#fff;display:grid;place-items:center;font-size:25px;font-weight:950;margin:0 auto 14px;box-shadow:0 14px 35px rgba(11,85,93,.18)}.loading strong{display:block;font-size:28px;letter-spacing:-1px}.loading span{display:block;color:#6c7779;margin-top:7px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b555d">
+<meta name="description" content="Faz Já. Precisas. Encontras. Está feito.">
+<title>Faz Já | Precisas. Encontras. Está feito.</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#f5f7f6;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10181a}.loading{min-height:100dvh;display:grid;place-items:center;text-align:center;padding:30px}.mark{width:62px;height:62px;border-radius:22px;background:#0b555d;color:#fff;display:grid;place-items:center;font-size:25px;font-weight:950;margin:0 auto 14px;box-shadow:0 14px 35px rgba(11,85,93,.18)}.loading strong{display:block;font-size:28px;letter-spacing:-1px}.loading span{display:block;color:#6c7779;margin-top:7px}
+</style>
 </head>
 <body>
-  <div class="loading" id="loading"><div><div class="mark">FJ</div><strong>Faz Já.</strong><span>A abrir a plataforma…</span></div></div>
-  <script>
-    (async()=>{
-      try{
-        const response=await fetch('../fazperto/index.html?v=3',{cache:'no-store'});
-        if(!response.ok) throw new Error('HTTP '+response.status);
-        let html=await response.text();
-        const skin=`<style id="fazja-skin">
+<div class="loading" id="loading"><div><div class="mark">FJ</div><strong>Faz Já.</strong><span>A abrir a plataforma…</span></div></div>
+<script>
+(async()=>{
+  try{
+    const response=await fetch('../fazperto/index.html?v=4',{cache:'no-store'});
+    if(!response.ok) throw new Error('HTTP '+response.status);
+    let html=await response.text();
+    html=html.replaceAll('FazPerto','Faz Já');
+    html=html.replace('Marketplace de serviços em validação','Serviços perto de ti');
+    html=html.replace('Diz o problema.<br><span>Encontramos quem resolve.</span>','Precisas.<br><span>Encontras.</span><br>Está feito.');
+    html=html.replace('Não precisas de saber que profissão procurar. Descreve o que se passa, indica a zona e o Faz Já procura profissionais reais registados na plataforma.','Encontra profissionais para o que precisas, de forma simples e rápida. Pesquisa por problema, serviço ou categoria.');
+    html=html.replace('Profissionais reais encontrados','Profissionais encontrados');
+    html=html.replace('MVP público para validar procura e oferta de serviços.','Precisas. Encontras. Está feito.');
+    html=html.replace('Nome provisório · Portugal · 2026','Portugal · 2026');
+
+    const skin=`<style id="fazja-skin">
 :root{--bg:#f5f7f6!important;--paper:#fff!important;--ink:#10181a!important;--muted:#6b7577!important;--line:#e3e9e7!important;--blue:#0b555d!important;--blue-dark:#083f46!important;--navy:#0f1d1f!important;--green:#13745a!important;--green-bg:#e6f5ef!important;--radius:28px!important;--shadow:0 18px 55px rgba(7,61,68,.10)!important}
-body{background:var(--bg)!important;color:var(--ink)!important}.topbar{background:rgba(245,247,246,.92)!important;border-bottom:1px solid rgba(227,233,231,.92)!important;backdrop-filter:blur(18px)!important}.nav{height:72px!important}.brand{font-size:28px!important;letter-spacing:-1.4px!important}.brand span,.footer-brand span{color:#0b555d!important}.btn{border-radius:999px!important}.btn.primary{background:#0b555d!important;box-shadow:0 8px 22px rgba(11,85,93,.18)!important}.btn.primary:hover{background:#083f46!important}.btn.ghost{background:#eaf3f3!important;color:#083f46!important}.btn.dark{background:#0f1d1f!important}.hero{padding-top:56px!important;padding-bottom:24px!important}.hero-copy{max-width:900px!important}.eyebrow{background:#eaf3f3!important;color:#083f46!important;border:1px solid #d0e3e4!important;padding:8px 12px!important;border-radius:999px!important}.hero h1{font-size:clamp(48px,7.4vw,86px)!important;line-height:.93!important;letter-spacing:-4px!important;margin:18px 0!important}.hero h1 span{color:#0b555d!important}.hero-copy>p{font-size:18px!important;max-width:720px!important;color:#6b7577!important}.search-card{margin-top:28px!important;border-radius:32px!important;border:1px solid #e3e9e7!important;padding:12px!important;box-shadow:0 18px 55px rgba(7,61,68,.10)!important}.search-main textarea{background:#f8fbfa!important;border-radius:20px!important;padding:14px 16px!important}.search-side{border-color:#e3e9e7!important}.field.compact input{background:#f8fbfa!important;border-radius:18px!important;padding:14px!important}.search-helper select{border-radius:16px!important;border-color:#e3e9e7!important;padding:11px 13px!important}.proof-strip{display:none!important}.section{padding-top:42px!important;padding-bottom:42px!important}.section-heading h2,.feature-card h2{letter-spacing:-1.7px!important}.categories{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:14px!important}.category-card{border:1px solid #e3e9e7!important;border-radius:26px!important;min-height:148px!important;padding:18px!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important}.category-card:hover{transform:translateY(-3px)!important;box-shadow:0 14px 32px rgba(7,61,68,.08)!important;border-color:#c6d7d8!important}.category-card .emoji{width:54px!important;height:54px!important;border-radius:18px!important;background:#eaf3f3!important;color:#0b555d!important;display:grid!important;place-items:center!important;font-size:0!important}.category-card .emoji svg{width:27px;height:27px;stroke:#0b555d;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}.category-card strong{font-size:16px!important;margin-top:18px!important}.category-card small{color:#6b7577!important}.match-banner{border-radius:26px!important;background:#0f1d1f!important}.professional-card{border-radius:24px!important;border-color:#e3e9e7!important}.avatar{border-radius:18px!important;background:#eaf3f3!important;color:#0b555d!important}.badge.verified{background:#eaf3f3!important;color:#083f46!important}.empty-state{border:1px solid #e3e9e7!important;border-radius:28px!important}.empty-icon{width:64px;height:64px;border-radius:22px;background:#eaf3f3;color:#0b555d;display:grid;place-items:center;margin:0 auto;font-size:30px}.feature-card{border-radius:32px!important;border-color:#e3e9e7!important;box-shadow:0 10px 26px rgba(7,61,68,.04)!important}.feature-card.dark-card{background:linear-gradient(145deg,#0b555d,#083f46)!important}.modal-card{border-radius:30px!important}.icon-button{border-radius:50%!important;background:#f5f8f7!important}.tabs{border-radius:999px!important}.tab{border-radius:999px!important}.field input,.field textarea,.field select{border-radius:16px!important}.skill-picker{border-radius:18px!important}.skill-option input:checked+span{background:#eaf3f3!important;color:#083f46!important;border-color:#a7c8ca!important}.request-status{background:#eaf3f3!important;color:#083f46!important}.footer-links a{color:#0b555d!important}
+body{background:var(--bg)!important;color:var(--ink)!important}.topbar{background:rgba(245,247,246,.93)!important;border-bottom:1px solid rgba(227,233,231,.92)!important;backdrop-filter:blur(18px)!important}.nav{height:72px!important}.brand{font-size:28px!important;letter-spacing:-1.4px!important}.brand span,.footer-brand span{color:#0b555d!important}.btn{border-radius:999px!important}.btn.primary{background:#0b555d!important;box-shadow:0 8px 22px rgba(11,85,93,.18)!important}.btn.primary:hover{background:#083f46!important}.btn.ghost{background:#eaf3f3!important;color:#083f46!important}.btn.dark{background:#0f1d1f!important}.hero{padding-top:56px!important;padding-bottom:24px!important}.hero-copy{max-width:900px!important}.eyebrow{background:#eaf3f3!important;color:#083f46!important;border:1px solid #d0e3e4!important;padding:8px 12px!important;border-radius:999px!important}.hero h1{font-size:clamp(48px,7.4vw,86px)!important;line-height:.93!important;letter-spacing:-4px!important;margin:18px 0!important}.hero h1 span{color:#0b555d!important}.hero-copy>p{font-size:18px!important;max-width:720px!important;color:#6b7577!important}.search-card{margin-top:28px!important;border-radius:32px!important;border:1px solid #e3e9e7!important;padding:12px!important;box-shadow:0 18px 55px rgba(7,61,68,.10)!important}.search-main textarea{background:#f8fbfa!important;border-radius:20px!important;padding:14px 16px!important}.search-side{border-color:#e3e9e7!important}.field.compact input{background:#f8fbfa!important;border-radius:18px!important;padding:14px!important}.search-helper select{border-radius:16px!important;border-color:#e3e9e7!important;padding:11px 13px!important}.proof-strip{display:none!important}.section{padding-top:42px!important;padding-bottom:42px!important}.section-heading h2,.feature-card h2{letter-spacing:-1.7px!important}.categories{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:14px!important}.category-card{border:1px solid #e3e9e7!important;border-radius:26px!important;min-height:148px!important;padding:18px!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important}.category-card:hover{transform:translateY(-3px)!important;box-shadow:0 14px 32px rgba(7,61,68,.08)!important;border-color:#c6d7d8!important}.category-card .emoji{width:54px!important;height:54px!important;border-radius:18px!important;background:#eaf3f3!important;color:#0b555d!important;display:grid!important;place-items:center!important;font-size:0!important}.category-card .emoji svg{width:27px;height:27px;stroke:#0b555d;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}.category-card strong{font-size:16px!important;margin-top:18px!important}.category-card small{color:#6b7577!important}.match-banner{border-radius:26px!important;background:#0f1d1f!important}.professional-card{border-radius:24px!important;border-color:#e3e9e7!important}.avatar{border-radius:18px!important;background:#eaf3f3!important;color:#0b555d!important}.badge.verified{background:#eaf3f3!important;color:#083f46!important}.empty-state{border:1px solid #e3e9e7!important;border-radius:28px!important}.empty-icon{width:64px;height:64px;border-radius:22px;background:#eaf3f3!important;color:#0b555d!important;display:grid!important;place-items:center!important;margin:0 auto!important;font-size:30px!important}.feature-card{border-radius:32px!important;border-color:#e3e9e7!important;box-shadow:0 10px 26px rgba(7,61,68,.04)!important}.feature-card.dark-card{background:linear-gradient(145deg,#0b555d,#083f46)!important}.modal-card{border-radius:30px!important}.icon-button{border-radius:50%!important;background:#f5f8f7!important}.tabs{border-radius:999px!important}.tab{border-radius:999px!important}.field input,.field textarea,.field select{border-radius:16px!important}.skill-picker{border-radius:18px!important}.skill-option input:checked+span{background:#eaf3f3!important;color:#083f46!important;border-color:#a7c8ca!important}.request-status{background:#eaf3f3!important;color:#083f46!important}.footer-links a{color:#0b555d!important}
 @media(max-width:900px){.categories{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:640px){.nav{height:64px!important}.brand{font-size:24px!important}.hero{padding-top:38px!important}.hero h1{font-size:46px!important;letter-spacing:-2.7px!important}.hero-copy>p{font-size:16px!important}.categories{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.category-card{min-height:135px!important;padding:16px!important}.category-card .emoji{width:50px!important;height:50px!important}}
 </style>`;
-        const behavior=`<script id="fazja-ui-patch">(function(){
-const q=(s)=>document.querySelector(s);const qa=(s)=>[...document.querySelectorAll(s)];
+
+    const patchScript=`<script id="fazja-ui-patch">(function(){
 const icons={
 'casa':'<svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M9.5 20v-6h5v6"/></svg>',
-'automóvel':'<svg viewBox="0 0 24 24"><path d="m5 16-1.2-4.2A2 2 0 0 1 5.7 9h12.6a2 2 0 0 1 1.9 2.8L19 16"/><path d="M5 16h14v3H5z"/><circle cx="7.5" cy="16" r="1"/><circle cx="16.5" cy="16" r="1"/><path d="m7 9 1.5-3h7L17 9"/></svg>',
 'automovel':'<svg viewBox="0 0 24 24"><path d="m5 16-1.2-4.2A2 2 0 0 1 5.7 9h12.6a2 2 0 0 1 1.9 2.8L19 16"/><path d="M5 16h14v3H5z"/><circle cx="7.5" cy="16" r="1"/><circle cx="16.5" cy="16" r="1"/><path d="m7 9 1.5-3h7L17 9"/></svg>',
 'tecnologia':'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
 'limpeza e apoio':'<svg viewBox="0 0 24 24"><path d="m14 4 6 6"/><path d="M16.5 6.5 8 15"/><path d="M5 14c3 0 5 2 5 5H4c0-2 .3-3.5 1-5Z"/><path d="M6 18v2M8 18v2"/></svg>',
 'beleza e bem-estar':'<svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><path d="m9 9 8 8M15 9l-8 8"/></svg>',
-'educação':'<svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4-9-4Z"/><path d="M7 10.5V15c3 2 7 2 10 0v-4.5M21 8v6"/></svg>',
 'educacao':'<svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4-9-4Z"/><path d="M7 10.5V15c3 2 7 2 10 0v-4.5M21 8v6"/></svg>',
 'eventos':'<svg viewBox="0 0 24 24"><path d="M12 3 9.5 8.5 4 11l5.5 2.5L12 19l2.5-5.5L20 11l-5.5-2.5L12 3Z"/><path d="M5 4v3M3.5 5.5h3"/></svg>',
 'animais':'<svg viewBox="0 0 24 24"><circle cx="8" cy="7" r="2"/><circle cx="16" cy="7" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M8 18c0-3 2-5 4-5s4 2 4 5c0 2-1.5 3-4 3s-4-1-4-3Z"/></svg>',
-'negócios e profissionais':'<svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5h6v2M4 12h16M10 12v2h4v-2"/></svg>',
 'negocios e profissionais':'<svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5h6v2M4 12h16M10 12v2h4v-2"/></svg>',
 'transportes':'<svg viewBox="0 0 24 24"><path d="M3 6h12v10H3zM15 10h3l3 3v3h-6z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>'};
-function normalize(t){return (t||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function norm(t){return (t||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
 function patch(){
-const brand=q('.brand');if(brand){brand.innerHTML='Faz <span>Já.</span>';brand.setAttribute('aria-label','Faz Já, início')}
-const eyebrow=q('.eyebrow');if(eyebrow)eyebrow.textContent='Serviços perto de ti';
-const h1=q('.hero h1');if(h1)h1.innerHTML='Precisas.<br><span>Encontras.</span><br>Está feito.';
-const heroP=q('.hero-copy>p');if(heroP)heroP.textContent='Encontra profissionais para o que precisas, de forma simples e rápida. Pesquisa por problema, serviço ou categoria.';
-qa('.category-card').forEach(card=>{const name=card.querySelector('strong')?.textContent||'';const slot=card.querySelector('.emoji');if(slot){const key=normalize(name);slot.innerHTML=icons[key]||'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/></svg>'}});
-const matchSmall=q('.match-banner small');if(matchSmall)matchSmall.textContent='SERVIÇO';
-const foot=q('.footer-brand');if(foot)foot.innerHTML='Faz <span>Já.</span>';
-const footP=q('.footer-inner p');if(footP)footP.textContent='Precisas. Encontras. Está feito.';
-const authK=q('#authModal .kicker');if(authK)authK.textContent='CONTA FAZ JÁ';
-const signupLabel=q('label[for="signupType"]');if(signupLabel)signupLabel.textContent='Quero usar o Faz Já para…';
-const account=q('#accountName');if(account&&account.textContent==='FazPerto')account.textContent='Faz Já';
+ document.title='Faz Já | Precisas. Encontras. Está feito.';
+ const brand=document.querySelector('.brand');if(brand&&brand.dataset.fj!=='1'){brand.innerHTML='Faz <span>Já.</span>';brand.dataset.fj='1'}
+ const eyebrow=document.querySelector('.eyebrow');if(eyebrow)eyebrow.textContent='Serviços perto de ti';
+ const h1=document.querySelector('.hero h1');if(h1&&h1.dataset.fj!=='1'){h1.innerHTML='Precisas.<br><span>Encontras.</span><br>Está feito.';h1.dataset.fj='1'}
+ const p=document.querySelector('.hero-copy>p');if(p)p.textContent='Encontra profissionais para o que precisas, de forma simples e rápida. Pesquisa por problema, serviço ou categoria.';
+ document.querySelectorAll('.category-card').forEach(card=>{const name=card.querySelector('strong')?.textContent||'';const slot=card.querySelector('.emoji');if(!slot)return;const key=norm(name);if(slot.dataset.fj===key)return;slot.innerHTML=icons[key]||'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/></svg>';slot.dataset.fj=key});
+ const foot=document.querySelector('.footer-brand');if(foot&&foot.dataset.fj!=='1'){foot.innerHTML='Faz <span>Já.</span>';foot.dataset.fj='1'}
+ const footP=document.querySelector('.footer-inner p');if(footP)footP.textContent='Precisas. Encontras. Está feito.';
+ const account=document.querySelector('#accountName');if(account&&account.textContent.includes('Faz'))account.textContent='Faz Já';
 }
-patch();new MutationObserver(patch).observe(document.documentElement,{subtree:true,childList:true});
+[0,250,600,1200,2200,3500].forEach(ms=>setTimeout(patch,ms));
 })();<\/script>`;
-        html=html.replace(/<head([^>]*)>/i,'<head$1><base href="../fazperto/">'+skin);
-        html=html.replace('</body>',behavior+'</body>');
-        document.open();document.write(html);document.close();
-      }catch(error){
-        document.getElementById('loading').innerHTML='<div><div class="mark">FJ</div><strong>Faz Já.</strong><span>Não foi possível abrir a plataforma. Recarrega a página.</span></div>';
-      }
-    })();
-  </script>
+
+    html=html.replace(/<head([^>]*)>/i,'<head$1><base href="../fazperto/">'+skin);
+    html=html.replace('</body>',patchScript+'</body>');
+    document.open();document.write(html);document.close();
+  }catch(error){
+    console.error('Faz Ja bootstrap error',error);
+    document.getElementById('loading').innerHTML='<div><div class="mark">FJ</div><strong>Faz Já.</strong><span>Não foi possível abrir a plataforma. Recarrega a página.</span></div>';
+  }
+})();
+</script>
 </body>
 </html>
