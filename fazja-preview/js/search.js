@@ -47,15 +47,8 @@ function categoryIcon(name) {
 }
 
 function formatPrice(professional) {
-  if (professional.price_unit === 'quote' || professional.base_price == null) {
-    return 'Sob orçamento';
-  }
-
-  const value = Number(professional.base_price).toLocaleString('pt-PT', {
-    style: 'currency',
-    currency: 'EUR',
-  });
-
+  if (professional.price_unit === 'quote' || professional.base_price == null) return 'Sob orçamento';
+  const value = Number(professional.base_price).toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
   if (professional.price_unit === 'hour') return `${value}/h`;
   if (professional.price_unit === 'visit') return `${value} deslocação`;
   return `Desde ${value}`;
@@ -63,195 +56,78 @@ function formatPrice(professional) {
 
 export function resolveSkill(text) {
   const normalized = normalizeText(text);
-
   for (const [slug, terms] of keywords) {
-    if (terms.some((term) => normalized.includes(normalizeText(term)))) {
-      return skills.find((skill) => skill.slug === slug) || null;
-    }
+    if (terms.some((term) => normalized.includes(normalizeText(term)))) return skills.find((skill) => skill.slug === slug) || null;
   }
-
-  return skills.find((skill) => normalized.includes(normalizeText(skill.name)))
-    || selectedSkill
-    || null;
+  return skills.find((skill) => normalized.includes(normalizeText(skill.name))) || selectedSkill || null;
 }
 
 function renderCategories() {
-  $('categoryGrid').innerHTML = categories.map((category) => `
-    <button class="category-card" data-cat="${category.id}">
-      <span class="cat-icon">${categoryIcon(category.name)}</span>
-      <span class="cat-name">${escapeHtml(category.name)}</span>
-      <span class="cat-arrow">↗</span>
-    </button>
-  `).join('');
-
-  document.querySelectorAll('[data-cat]').forEach((button) => {
-    button.onclick = () => selectCategory(Number(button.dataset.cat));
-  });
+  $('categoryGrid').innerHTML = categories.map((category) => `<button class="category-card" data-cat="${category.id}"><span class="cat-icon">${categoryIcon(category.name)}</span><span class="cat-name">${escapeHtml(category.name)}</span><span class="cat-arrow">↗</span></button>`).join('');
+  document.querySelectorAll('[data-cat]').forEach((button) => { button.onclick = () => selectCategory(Number(button.dataset.cat)); });
 }
 
 function selectCategory(id) {
   selectedSkill = null;
-
-  document.querySelectorAll('[data-cat]').forEach((button) => {
-    button.classList.toggle('active', Number(button.dataset.cat) === id);
-  });
-
+  document.querySelectorAll('[data-cat]').forEach((button) => button.classList.toggle('active', Number(button.dataset.cat) === id));
   const category = categories.find((item) => item.id === id);
   const categorySkills = skills.filter((skill) => skill.category_id === id);
-
   $('servicesTitle').textContent = category?.name || 'Serviços';
-  $('serviceChips').innerHTML = categorySkills.map((skill) => `
-    <button class="service-chip" data-skill="${skill.id}">${escapeHtml(skill.name)}</button>
-  `).join('');
+  $('serviceChips').innerHTML = categorySkills.map((skill) => `<button class="service-chip" data-skill="${skill.id}">${escapeHtml(skill.name)}</button>`).join('');
   $('servicesPanel').classList.remove('hidden');
-
-  document.querySelectorAll('[data-skill]').forEach((button) => {
-    button.onclick = () => pickSkill(Number(button.dataset.skill));
-  });
-
+  document.querySelectorAll('[data-skill]').forEach((button) => { button.onclick = () => pickSkill(Number(button.dataset.skill)); });
   $('servicesPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function pickSkill(id) {
   selectedSkill = skills.find((skill) => skill.id === id) || null;
-
-  document.querySelectorAll('[data-skill]').forEach((button) => {
-    button.classList.toggle('active', Number(button.dataset.skill) === id);
-  });
-
-  if (selectedSkill) {
-    $('problem').value = selectedSkill.name;
-    $('problem').focus();
-  }
+  document.querySelectorAll('[data-skill]').forEach((button) => button.classList.toggle('active', Number(button.dataset.skill) === id));
+  if (selectedSkill) { $('problem').value = selectedSkill.name; $('problem').focus(); }
 }
 
 async function logSearch(resultCount) {
   const session = sessionProvider();
-
-  await S.from('search_events').insert({
-    session_id: getOrCreateSessionId(),
-    user_id: session?.user?.id || null,
-    query: lastQuery || selectedSkill?.name || 'Pesquisa',
-    resolved_skill_id: selectedSkill?.id || null,
-    city: lastCity || null,
-    result_count: resultCount,
-  });
+  await S.from('search_events').insert({ session_id: getOrCreateSessionId(), user_id: session?.user?.id || null, query: lastQuery || selectedSkill?.name || 'Pesquisa', resolved_skill_id: selectedSkill?.id || null, city: lastCity || null, result_count: resultCount });
 }
 
 async function searchProfessionals() {
-  const linked = await S
-    .from('professional_skills')
-    .select('professional_id')
-    .eq('skill_id', selectedSkill.id);
-
+  const linked = await S.from('professional_skills').select('professional_id').eq('skill_id', selectedSkill.id);
   if (linked.error) throw linked.error;
-
   const professionalIds = [...new Set((linked.data || []).map((item) => item.professional_id))];
   if (!professionalIds.length) return [];
-
-  let query = S
-    .from('professional_profiles')
-    .select('user_id,public_name,headline,bio,city,base_price,price_unit,is_available,verification_status')
-    .in('user_id', professionalIds)
-    .eq('is_public', true);
-
+  let query = S.from('professional_profiles').select('user_id,public_name,headline,bio,city,base_price,price_unit,is_available,verification_status').in('user_id', professionalIds).eq('is_public', true);
   if (lastCity) query = query.ilike('city', lastCity);
-
   const result = await query.order('is_available', { ascending: false });
   if (result.error) throw result.error;
   return result.data || [];
 }
 
 function renderProfessionals(professionals) {
-  if (!professionals.length) {
-    $('empty').classList.remove('hidden');
-    return;
-  }
-
-  $('cards').innerHTML = professionals.map((professional) => `
-    <article class="pro-card">
-      <div class="pro-top">
-        <div class="avatar">${escapeHtml((professional.public_name || 'F').charAt(0).toUpperCase())}</div>
-        <div>
-          <h3>${escapeHtml(professional.public_name || 'Profissional Faz Já')}</h3>
-          <div class="meta">${escapeHtml(professional.headline || selectedSkill.name)} · ${escapeHtml(professional.city || 'Zona por indicar')}</div>
-        </div>
-      </div>
-      <div class="badges">
-        <span class="badge ${professional.is_available ? 'on' : ''}">${professional.is_available ? '● Disponível agora' : 'A combinar'}</span>
-        <span class="badge">${professional.verification_status === 'verified' ? '✓ Verificado' : 'Novo na plataforma'}</span>
-      </div>
-      <p class="bio">${escapeHtml(professional.bio || 'Sem apresentação ainda.')}</p>
-      <div class="pro-foot">
-        <strong>${formatPrice(professional)}</strong>
-        <button class="btn primary ask" type="button">Pedir serviço</button>
-      </div>
-    </article>
-  `).join('');
-
+  if (!professionals.length) { $('empty').classList.remove('hidden'); return; }
+  $('cards').innerHTML = professionals.map((professional) => `<article class="pro-card"><div class="pro-top"><div class="avatar">${escapeHtml((professional.public_name || 'F').charAt(0).toUpperCase())}</div><div><h3>${escapeHtml(professional.public_name || 'Profissional Faz Já')}</h3><div class="meta">${escapeHtml(professional.headline || selectedSkill.name)} · ${escapeHtml(professional.city || 'Zona por indicar')}</div></div></div><div class="badges"><span class="badge ${professional.is_available ? 'on' : ''}">${professional.is_available ? '● Disponível agora' : 'A combinar'}</span><span class="badge">${professional.verification_status === 'verified' ? '✓ Verificado' : 'Novo na plataforma'}</span></div><p class="bio">${escapeHtml(professional.bio || 'Sem apresentação ainda.')}</p><div class="pro-foot"><strong>${formatPrice(professional)}</strong><button class="btn primary ask" type="button" data-professional="${professional.user_id}">Pedir serviço</button></div></article>`).join('');
   document.querySelectorAll('.ask').forEach((button) => {
-    button.onclick = () => requestHandler();
+    button.onclick = () => requestHandler(professionals.find((item) => item.user_id === button.dataset.professional) || null);
   });
 }
 
 async function handleSearch(event) {
   event.preventDefault();
-
-  lastQuery = $('problem').value.trim();
-  lastCity = $('city').value.trim();
-  selectedSkill = resolveSkill(lastQuery);
-
-  $('results').classList.remove('hidden');
-  $('cards').innerHTML = '';
-  $('empty').classList.add('hidden');
-
-  if (!selectedSkill) {
-    $('matchText').textContent = 'Escolhe uma categoria ou descreve melhor o que precisas';
-    $('empty').classList.remove('hidden');
-    await logSearch(0);
-    return;
-  }
-
+  lastQuery = $('problem').value.trim(); lastCity = $('city').value.trim(); selectedSkill = resolveSkill(lastQuery);
+  $('results').classList.remove('hidden'); $('cards').innerHTML = ''; $('empty').classList.add('hidden');
+  if (!selectedSkill) { $('matchText').textContent = 'Escolhe uma categoria ou descreve melhor o que precisas'; $('empty').classList.remove('hidden'); await logSearch(0); return; }
   $('matchText').textContent = selectedSkill.name;
-
-  try {
-    const professionals = await searchProfessionals();
-    await logSearch(professionals.length);
-    renderProfessionals(professionals);
-  } catch (error) {
-    console.error(error);
-    $('empty').classList.remove('hidden');
-  }
-
+  try { const professionals = await searchProfessionals(); await logSearch(professionals.length); renderProfessionals(professionals); }
+  catch (error) { console.error(error); $('empty').classList.remove('hidden'); }
   $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 export async function initSearch({ getSession = () => null, onRequest = () => {} } = {}) {
-  sessionProvider = getSession;
-  requestHandler = onRequest;
-
-  const [categoriesResult, skillsResult] = await Promise.all([
-    S.from('service_categories').select('id,name,sort_order').order('sort_order'),
-    S.from('skills').select('id,category_id,slug,name').order('name'),
-  ]);
-
-  if (categoriesResult.error || skillsResult.error) {
-    throw new Error('Falha ao carregar serviços');
-  }
-
-  categories = categoriesResult.data || [];
-  skills = skillsResult.data || [];
-
-  renderCategories();
-  $('searchForm').onsubmit = handleSearch;
-
+  sessionProvider = getSession; requestHandler = onRequest;
+  const [categoriesResult, skillsResult] = await Promise.all([S.from('service_categories').select('id,name,sort_order').order('sort_order'), S.from('skills').select('id,category_id,slug,name').order('name')]);
+  if (categoriesResult.error || skillsResult.error) throw new Error('Falha ao carregar serviços');
+  categories = categoriesResult.data || []; skills = skillsResult.data || [];
+  renderCategories(); $('searchForm').onsubmit = handleSearch;
   return { categories: [...categories], skills: [...skills] };
 }
 
-export function getSearchContext() {
-  return {
-    query: lastQuery,
-    city: lastCity,
-    skill: selectedSkill,
-  };
-}
+export function getSearchContext() { return { query: lastQuery, city: lastCity, skill: selectedSkill }; }
