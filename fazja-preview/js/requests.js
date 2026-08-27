@@ -1,6 +1,6 @@
 import { supabase as S } from './supabase.js';
 import { getSession, requireAuth } from './auth.js';
-import { getSearchContext, resolveSkill } from './search.js';
+import { getSearchContext, resolveSkill } from './search.js?v=2';
 
 const $ = (id) => document.getElementById(id);
 let targetProfessional = null;
