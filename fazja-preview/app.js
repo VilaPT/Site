@@ -37,7 +37,7 @@ function bindGlobalUi() {
 }
 function bindLegalUi() {
   const legal = {
-    privacy: { title: 'Política de Privacidade', body: 'O Faz Já utiliza os dados necessários para criar contas, apresentar perfis profissionais, guardar pedidos e melhorar a pesquisa de serviços. A autenticação e a base de dados usam infraestrutura Supabase. Não vendemos dados pessoais a anunciantes.' },
+    privacy: { title: 'Política de Privacidade', body: 'O Chama O Pro utiliza os dados necessários para criar contas, apresentar perfis profissionais, guardar pedidos e melhorar a pesquisa de serviços. A autenticação e a base de dados usam infraestrutura Supabase. Não vendemos dados pessoais a anunciantes.' },
     terms: { title: 'Termos de Utilização', body: 'A conta de utilizador é gratuita. O modo profissional inclui 60 dias gratuitos a partir da criação do primeiro perfil profissional. Depois desse período, o perfil profissional deixa de aparecer publicamente sem uma subscrição ativa. O valor da mensalidade será apresentado antes da ativação do pagamento. Cada profissional é responsável pela informação do perfil, qualificações, preços e execução do serviço.' },
   };
   document.querySelectorAll('[data-legal]').forEach((button) => { button.onclick = () => { const content = legal[button.dataset.legal]; if (!content) return; $('legalTitle').textContent = content.title; $('legalBody').textContent = content.body; $('legalModal')?.classList.add('open'); }; });
