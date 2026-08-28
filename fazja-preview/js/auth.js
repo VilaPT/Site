@@ -133,7 +133,7 @@ async function submitAuth(event) {
       }
 
       closeModal();
-      callbacks.onToast?.('Bem-vindo ao Faz Já');
+      callbacks.onToast?.('Bem-vindo ao Chama O Pro');
       return;
     }
 
@@ -144,7 +144,7 @@ async function submitAuth(event) {
     }
 
     closeModal();
-    callbacks.onToast?.('Bem-vindo ao Faz Já');
+    callbacks.onToast?.('Bem-vindo ao Chama O Pro');
   } finally {
     setSubmitting(false);
   }
