@@ -15,6 +15,15 @@ import { initPortugalPlacesDatalist } from './js/location.js?v=11';
 const $ = (id) => document.getElementById(id);
 let session = null;
 
+function ensureFeatureStyles() {
+  if (document.querySelector('link[data-cop-features="13"]')) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = './feature13.css?v=13';
+  link.dataset.copFeatures = '13';
+  document.head.appendChild(link);
+}
+
 function toast(message) {
   const element = $('toast');
   if (!element) return;
@@ -73,14 +82,8 @@ const faqHtml = `
 
 function bindLegalUi() {
   const legal = {
-    about: {
-      title: 'Sobre o Chama O Pro',
-      html: aboutHtml,
-    },
-    faq: {
-      title: 'Perguntas frequentes',
-      html: faqHtml,
-    },
+    about: { title: 'Sobre o Chama O Pro', html: aboutHtml },
+    faq: { title: 'Perguntas frequentes', html: faqHtml },
     privacy: {
       title: 'Política de Privacidade',
       body: 'O Chama O Pro utiliza os dados necessários para criar contas, apresentar perfis profissionais, guardar pedidos, gerir marcações, avaliações e melhorar a pesquisa de serviços. A autenticação e a base de dados usam infraestrutura Supabase. A localização indicada é usada para calcular proximidade entre pedidos e profissionais. Não vendemos dados pessoais a anunciantes.',
@@ -105,6 +108,7 @@ function bindLegalUi() {
 }
 
 async function init() {
+  ensureFeatureStyles();
   bindGlobalUi();
   bindLegalUi();
   initRequests();
