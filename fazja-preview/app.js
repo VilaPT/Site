@@ -109,6 +109,58 @@ function bindLegalUi() {
   });
 }
 
+async function initIdentityVerificationSafely() {
+  const NativeMutationObserver = window.MutationObserver;
+  if (!NativeMutationObserver) {
+    await initIdentityVerification({ getSession, toast });
+    return;
+  }
+
+  class NonReentrantMutationObserver {
+    constructor(callback) {
+      this.target = null;
+      this.options = null;
+      this.running = false;
+      this.observer = new NativeMutationObserver((mutations) => {
+        if (this.running) return;
+        this.running = true;
+        this.observer.disconnect();
+        try {
+          callback(mutations, this);
+        } finally {
+          const target = this.target;
+          const options = this.options;
+          this.running = false;
+          if (target && options) this.observer.observe(target, options);
+        }
+      });
+    }
+
+    observe(target, options) {
+      this.target = target;
+      this.options = options;
+      this.observer.observe(target, options);
+    }
+
+    disconnect() {
+      this.target = null;
+      this.options = null;
+      this.observer.disconnect();
+    }
+
+    takeRecords() {
+      return this.observer.takeRecords();
+    }
+  }
+
+  window.MutationObserver = NonReentrantMutationObserver;
+  try {
+    await initIdentityVerification({ getSession, toast });
+  } finally {
+    window.MutationObserver = NativeMutationObserver;
+  }
+}
+
 async function init() {
   ensureFeatureStyles();
   bindGlobalUi();
@@ -124,7 +176,7 @@ async function init() {
     },
     onToast: toast,
   });
-  await initIdentityVerification({ getSession, toast });
+  await initIdentityVerificationSafely();
   const [searchData] = await Promise.all([
     initSearch({ getSession, onRequest: requestService }),
     loadPlan(),
