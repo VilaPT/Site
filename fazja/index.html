@@ -23,11 +23,12 @@
         const build = String(version.build || '18');
         const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
         let html = await appResponse.text();
-        html = html.replace('<head>', '<head><base href="../fazja-preview/"><link rel="stylesheet" href="./community18.css?v=' + build + '">');
+        html = html.replace('<head>', '<head><base href="../fazja-preview/">');
         html = html.replace(/styles\.css\?v=\d+/g, 'styles.css?v=' + build);
         html = html.replace(/account\.css\?v=\d+/g, 'account.css?v=' + build);
         html = html.replace(/app\.js\?v=\d+/g, 'app.js?v=' + build);
         html = html.replace(/account\.js\?v=\d+/g, 'account.js?v=' + build);
+        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"></head>');
         html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script></body>');
         document.open();
         document.write(html);
