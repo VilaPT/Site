@@ -8,9 +8,11 @@ import {
   trialDaysLeft,
 } from './memberships.js';
 import { escapeHtml } from './utils.js';
+import { normalizeLocation, resolvePortugalLocation } from './location.js?v=11';
 
 const $ = (id) => document.getElementById(id);
 let membershipChanged = () => {};
+let savedLocation = null;
 
 function openModal() {
   $('proModal')?.classList.add('open');
@@ -53,10 +55,19 @@ export async function openProfessionalProfile() {
   $('pname').value = professional.public_name || '';
   $('headline').value = professional.headline || '';
   $('bio').value = professional.bio || '';
-  $('pcity').value = professional.city || '';
+  $('pcity').value = professional.location_label || professional.city || '';
+  $('pradius').value = String(professional.service_radius_km || 15);
   $('price').value = professional.base_price ?? '';
   $('available').checked = Boolean(professional.is_available);
   $('public').checked = Boolean(professional.is_public);
+  savedLocation = professional.location_lat != null && professional.location_lon != null ? {
+    lat: Number(professional.location_lat),
+    lon: Number(professional.location_lon),
+    label: professional.location_label || professional.city || '',
+    municipality: professional.municipality || null,
+    parish: professional.parish || null,
+    district: professional.district || null,
+  } : null;
 
   const selectedIds = (skillsResult.data || []).map((item) => String(item.skill_id));
   [...$('pskills').options].forEach((option) => {
@@ -81,6 +92,22 @@ async function submitProfessionalProfile(event) {
     return;
   }
 
+  const typedLocation = $('pcity').value.trim();
+  if (!typedLocation) {
+    setMessage('Indica a localidade onde prestas serviços.', 'err');
+    return;
+  }
+
+  setMessage('A reconhecer a localidade em Portugal…');
+  let location = null;
+  if (savedLocation && normalizeLocation(savedLocation.label) === normalizeLocation(typedLocation)) location = savedLocation;
+  if (!location) location = await resolvePortugalLocation(typedLocation);
+  if (!location) {
+    setMessage('Não consegui reconhecer essa localidade. Experimenta a freguesia, o concelho ou o código postal.', 'err');
+    return;
+  }
+  $('pcity').value = location.label;
+
   const uid = session.user.id;
   const alreadyHadMembership = Boolean(getMembership());
   const payload = {
@@ -88,8 +115,14 @@ async function submitProfessionalProfile(event) {
     public_name: $('pname').value.trim(),
     headline: $('headline').value.trim() || null,
     bio: $('bio').value.trim() || null,
-    city: $('pcity').value.trim(),
-    service_radius_km: 15,
+    city: location.label,
+    district: location.district || null,
+    municipality: location.municipality || null,
+    parish: location.parish || null,
+    location_label: location.label,
+    location_lat: location.lat,
+    location_lon: location.lon,
+    service_radius_km: Number($('pradius').value || 15),
     base_price: $('price').value === '' ? null : Number($('price').value),
     price_unit: 'from',
     is_available: $('available').checked,
@@ -105,6 +138,8 @@ async function submitProfessionalProfile(event) {
     setMessage(profileResult.error.message, 'err');
     return;
   }
+
+  savedLocation = location;
 
   const deleteResult = await S
     .from('professional_skills')
@@ -134,9 +169,9 @@ async function submitProfessionalProfile(event) {
   await membershipChanged(session);
 
   const message = !alreadyHadMembership && membershipState() === 'trial'
-    ? `Perfil criado ✓ Tens cerca de ${trialDaysLeft()} dias gratuitos.`
+    ? `Perfil criado ✓ Tens cerca de ${trialDaysLeft()} dias gratuitos. A tua zona foi associada a ${location.label}.`
     : $('public').checked
-      ? 'Perfil publicado ✓'
+      ? `Perfil publicado ✓ Zona: ${location.label} · raio ${payload.service_radius_km} km.`
       : 'Perfil guardado ✓';
 
   setMessage(message, 'ok');
