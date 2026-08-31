@@ -4,32 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b555d">
-  <meta name="description" content="Faz Já. Precisas. Encontras. Está feito.">
-  <title>Faz Já | Precisas. Encontras. Está feito.</title>
+  <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
+  <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
   <style>
-    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f9f8;color:#073d44;display:grid;place-items:center;min-height:100vh}
-    .loader{display:grid;gap:12px;text-align:center;padding:24px}.mark{width:52px;height:52px;margin:auto;border-radius:16px;background:#0b555d;color:#fff;display:grid;place-items:center;font-weight:900}.loader span{color:#607174;font-size:14px}
+    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(145deg,#0b555d,#073d44);color:#fff;display:grid;place-items:center;min-height:100vh}
+    .loader{display:grid;place-items:center;text-align:center;padding:24px}.mark{font-size:48px;line-height:1;font-weight:1000;letter-spacing:-2px;text-shadow:0 0 12px rgba(255,255,255,.28),0 0 34px rgba(255,255,255,.18);animation:glow 1.05s ease-in-out infinite alternate}.loader.error{gap:12px}.loader.error .mark{font-size:36px}.loader span{color:#dce9e9;font-size:14px}
+    @keyframes glow{from{opacity:.76;transform:scale(.98);text-shadow:0 0 8px rgba(255,255,255,.18),0 0 20px rgba(255,255,255,.10)}to{opacity:1;transform:scale(1.035);text-shadow:0 0 18px rgba(255,255,255,.46),0 0 44px rgba(255,255,255,.24)}}
+    @media(prefers-reduced-motion:reduce){.mark{animation:none}}
   </style>
 </head>
 <body>
-  <div class="loader"><div class="mark">FJ</div><strong>A abrir o Faz Já…</strong><span>A carregar a versão mais recente.</span></div>
+  <div class="loader"><div class="mark">COP</div></div>
   <script>
     (async function(){
       try {
         const versionResponse = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
         const version = await versionResponse.json();
-        const build = String(version.build || '9');
+        const build = String(version.build || '18');
         const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
         let html = await appResponse.text();
-        html = html.replace('<head>', '<head><base href="../fazja-preview/">');
+        html = html.replace('<head>', '<head><base href="../fazja-preview/"><link rel="stylesheet" href="./community18.css?v=' + build + '">');
+        html = html.replace(/styles\.css\?v=\d+/g, 'styles.css?v=' + build);
         html = html.replace(/account\.css\?v=\d+/g, 'account.css?v=' + build);
         html = html.replace(/app\.js\?v=\d+/g, 'app.js?v=' + build);
         html = html.replace(/account\.js\?v=\d+/g, 'account.js?v=' + build);
+        html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script></body>');
         document.open();
         document.write(html);
         document.close();
       } catch (error) {
-        document.body.innerHTML = '<div class="loader"><div class="mark">FJ</div><strong>Não foi possível abrir o Faz Já.</strong><span>Verifica a ligação e tenta novamente.</span></div>';
+        document.body.innerHTML = '<div class="loader error"><div class="mark">COP</div><strong>Não foi possível abrir o Chama O Pro.</strong><span>Verifica a ligação e tenta novamente.</span></div>';
       }
     })();
   </script>
