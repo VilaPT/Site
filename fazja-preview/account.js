@@ -17,7 +17,7 @@ import {
   formatAppointment,
   initAppointments,
   openAppointmentScheduler,
-} from './js/appointments.js?v=13';
+} from './js/appointments.js?v=14';
 
 const $ = (id) => document.getElementById(id);
 let session = null;
