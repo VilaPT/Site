@@ -6,17 +6,18 @@
   <meta name="theme-color" content="#0b555d">
   <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
   <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
-  <link rel="stylesheet" href="./styles.css?v=11">
-  <link rel="stylesheet" href="./account.css?v=11">
+  <link rel="stylesheet" href="./styles.css?v=12">
+  <link rel="stylesheet" href="./account.css?v=12">
   <style>
-    @media(max-width:720px){.nav-actions .ghost{display:inline-flex!important;align-items:center;justify-content:center}.nav-actions .account-btn{display:none!important}.nav-actions .btn{padding:9px 10px;font-size:12px}.nav{gap:8px}.nav-actions{gap:6px}}
-    @media(max-width:430px){.brand-name{display:none}.brand-mark{width:38px;height:38px}.nav-actions .ghost{max-width:154px;white-space:normal;line-height:1.1;text-align:center}}
+    .hero-story{max-width:760px!important}.hero-story strong{display:block;margin-top:8px;color:var(--petrol2);font-size:1.08em}.info-section{scroll-margin-top:150px}.info-shell{background:#fff;border:1px solid var(--line);border-radius:30px;padding:28px;box-shadow:var(--shadow)}.info-shell h2{margin:0 0 8px;font-size:30px;letter-spacing:-1px}.info-shell>p{margin:0;color:var(--muted);line-height:1.65;max-width:900px}.about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}.about-card{background:#f8faf9;border:1px solid var(--line);border-radius:22px;padding:18px}.about-card strong{display:block;color:var(--petrol2);font-size:17px;margin-bottom:6px}.about-card span{color:var(--muted);font-size:14px;line-height:1.55}.faq-grid{display:grid;gap:9px;margin-top:20px}.faq-grid details{background:#f8faf9;border:1px solid var(--line);border-radius:18px;padding:0 16px}.faq-grid details[open]{background:#fff;border-color:var(--mid)}.faq-grid summary{cursor:pointer;list-style:none;font-weight:850;padding:15px 28px 15px 0;position:relative;color:var(--ink)}.faq-grid summary::-webkit-details-marker{display:none}.faq-grid summary:after{content:'+';position:absolute;right:2px;top:12px;font-size:23px;color:var(--petrol);font-weight:500}.faq-grid details[open] summary:after{content:'−'}.faq-grid details p{margin:0;padding:0 0 16px;color:var(--muted);font-size:14px;line-height:1.6}.legal a{border:0;background:none;color:var(--petrol);font-weight:800;cursor:pointer;text-decoration:none}.legal a:hover,.legal button:hover{text-decoration:underline}
+    @media(max-width:720px){.nav-actions .ghost{display:inline-flex!important;align-items:center;justify-content:center}.nav-actions .account-btn{display:none!important}.nav-actions .btn{padding:9px 10px;font-size:12px}.nav{gap:8px}.nav-actions{gap:6px}.about-grid{grid-template-columns:1fr}.info-shell{padding:21px}.info-shell h2{font-size:26px}}
+    @media(max-width:430px){.brand-name{display:inline;font-size:16px;letter-spacing:-.5px;white-space:nowrap}.brand-mark{width:36px;height:36px;border-radius:12px;font-size:12px}.brand{gap:7px}.nav-actions .ghost{max-width:110px;white-space:normal;line-height:1.05;text-align:center;font-size:10px}.nav-actions .dark{padding-left:9px;padding-right:9px}.nav{gap:5px}}
   </style>
 </head>
 <body>
 <header class="top">
   <div class="wrap nav">
-    <button class="brand" id="homeBtn" aria-label="Chama O Pro, início"><span class="brand-mark">COP</span><span class="brand-name">Chama <b>O Pro.</b></span></button>
+    <button class="brand" id="homeBtn" aria-label="Chama O Pro, início"><span class="brand-mark">COP</span><span class="brand-name">Chama <b>O Pro</b></span></button>
     <div class="nav-actions"><button class="btn ghost" id="proCta">Quero prestar serviços</button><button class="btn ghost account-btn" id="accountCta">Conta</button><button class="btn dark" id="authBtn">Entrar</button></div>
   </div>
   <nav class="mobile-nav" id="mobileNav" aria-label="Navegação principal">
@@ -29,15 +30,46 @@
 
 <main>
   <section class="hero wrap">
-    <div class="hero-grid"><div><span class="eyebrow">Serviços perto de ti</span><h1>Precisas.<br><span>Encontras.</span><br>Está feito.</h1><p>Pesquisa pelo problema, pelo serviço ou pela categoria e encontra profissionais de forma simples.</p></div><aside class="hero-side"><div class="orb">✓</div><strong>Profissionais: 2 meses grátis</strong><small>Cria o teu perfil, escolhe o que sabes fazer e começa a ganhar visibilidade.</small></aside></div>
+    <div class="hero-grid"><div><span class="eyebrow">Serviços perto de ti</span><h1>Precisas.<br><span>Encontras.</span><br>Está feito.</h1><p class="hero-story">Tens um cano roto? O teu carro não pegou hoje de manhã? Tens o PC bloqueado? Uma tomada que derreteu com a Bimby? Ou outra coisa que não saibas resolver? <strong>Chama O Pro!</strong></p></div><aside class="hero-side"><div class="orb">✓</div><strong>Profissionais: 2 meses grátis</strong><small>Cria o teu perfil, escolhe o que sabes fazer e começa a ganhar visibilidade.</small></aside></div>
     <form id="searchForm" class="search-card"><textarea id="problem" rows="2" maxlength="500" placeholder="O que precisas de resolver?"></textarea><input id="city" list="portugalPlaces" placeholder="Localidade ou código postal"><button class="btn primary" type="submit">Procurar</button></form>
   </section>
 
   <section class="section wrap"><div class="section-head"><div><h2>Explora por categoria</h2><p>Escolhe uma área para veres os serviços disponíveis.</p></div></div><div id="categoryGrid" class="category-grid"><div class="loading-card">A carregar categorias…</div></div><div id="servicesPanel" class="services-panel hidden"><h3 id="servicesTitle">Serviços</h3><div id="serviceChips" class="service-chips"></div></div></section>
   <section class="section wrap hidden" id="results"><div class="match-bar"><span class="match-dot"></span><div><small>SERVIÇO</small><strong id="matchText">A procurar…</strong></div></div><div id="cards" class="results-grid"></div><div id="empty" class="empty hidden"><div class="empty-icon">⌕</div><h3>Ainda não encontrámos ninguém nesta zona.</h3><p>Podes guardar o pedido e voltar mais tarde.</p><button class="btn primary" id="saveDemand">Guardar pedido</button></div></section>
+
+  <section class="section wrap info-section" id="about">
+    <div class="info-shell">
+      <h2>Sobre o Chama O Pro</h2>
+      <p>O Chama O Pro aproxima quem precisa de resolver um problema de profissionais que prestam esse serviço na sua zona. Pesquisa pelo que precisas, encontra profissionais por proximidade, fala em privado, recebe uma proposta e, no final, confirma o serviço e deixa a tua avaliação.</p>
+      <div class="about-grid">
+        <div class="about-card"><strong>Para quem precisa</strong><span>Descreve o problema, indica a localidade e encontra profissionais próximos. Podes comparar disponibilidade, distância, perfil e avaliações antes de fazeres o pedido.</span></div>
+        <div class="about-card"><strong>Para quem sabe fazer</strong><span>Cria o teu perfil profissional, escolhe os serviços que prestas, define a tua localização base e até onde te deslocas. Recebes pedidos compatíveis e falas diretamente com o cliente.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap info-section" id="faq">
+    <div class="info-shell">
+      <h2>Perguntas frequentes</h2>
+      <p>O essencial sobre pedidos, profissionais, localização, privacidade e avaliações.</p>
+      <div class="faq-grid">
+        <details><summary>O que é o Chama O Pro?</summary><p>É uma plataforma que liga pessoas que precisam de um serviço a profissionais adequados e próximos. Podes procurar por problema, serviço ou categoria e escolher a opção que melhor se adapta ao que precisas.</p></details>
+        <details><summary>Como encontro um profissional?</summary><p>Indica o que precisas de resolver e a tua localidade ou código postal. O sistema identifica o tipo de serviço e procura profissionais compatíveis, dando prioridade à proximidade e mostrando informação útil como disponibilidade e avaliações.</p></details>
+        <details><summary>Como é usada a localização?</summary><p>A localização serve para calcular a distância entre a zona do pedido e a base do profissional. Um profissional pode definir até onde aceita deslocar-se. A morada exata do profissional não é apresentada publicamente.</p></details>
+        <details><summary>O Chama O Pro é gratuito para clientes?</summary><p>Sim. Criar conta, pesquisar profissionais e fazer pedidos não tem custo para o cliente.</p></details>
+        <details><summary>Como funciona para profissionais?</summary><p>O profissional cria o perfil, escolhe os serviços que presta, a localização base e o raio de deslocação. Os primeiros 60 dias são gratuitos. O valor do plano profissional será sempre apresentado antes da ativação de qualquer pagamento.</p></details>
+        <details><summary>O profissional paga por cada contacto ou por cada trabalho?</summary><p>Não cobramos créditos por contacto nem comissão sobre o valor de cada serviço. O modelo profissional é baseado num plano, mantendo o contacto com clientes simples e previsível.</p></details>
+        <details><summary>Quando é que o meu telefone e morada são partilhados?</summary><p>Os dados pessoais do cliente não aparecem num perfil público. Quando fazes um pedido diretamente a um profissional, os dados necessários desse pedido ficam disponíveis apenas para as partes envolvidas, para permitir a prestação do serviço.</p></details>
+        <details><summary>Posso falar com o profissional antes de aceitar uma proposta?</summary><p>Sim. Cada pedido direcionado abre uma conversa privada. O profissional pode esclarecer dúvidas e enviar uma proposta, e o cliente decide se a aceita ou recusa.</p></details>
+        <details><summary>Como funcionam as avaliações?</summary><p>Quando o profissional marca o trabalho como terminado, o cliente confirma a conclusão e atribui uma avaliação de 1 a 5 estrelas, podendo também deixar um comentário. A reputação ajuda outros clientes a tomar decisões mais informadas.</p></details>
+        <details><summary>E se não houver nenhum profissional disponível perto de mim?</summary><p>O sistema respeita as zonas e os raios de deslocação definidos pelos profissionais. Se não houver correspondência nesse momento, podes guardar o pedido e voltar mais tarde à medida que entram novos profissionais na plataforma.</p></details>
+        <details><summary>Quem é responsável pela execução e pelo preço do serviço?</summary><p>O Chama O Pro facilita a descoberta, o contacto e a comunicação. A proposta, o preço acordado, as qualificações declaradas e a execução do trabalho são da responsabilidade do profissional e do cliente envolvidos no serviço.</p></details>
+      </div>
+    </div>
+  </section>
 </main>
 
-<footer class="footer"><div class="wrap footer-row"><div><strong>Chama O Pro.</strong><span>Precisas. Encontras. Está feito.</span></div><div class="legal"><button data-legal="privacy">Privacidade</button><button data-legal="terms">Termos</button></div></div></footer>
+<footer class="footer"><div class="wrap footer-row"><div><strong>Chama O Pro</strong><span>Precisas. Encontras. Está feito.</span></div><div class="legal"><a href="#about">Sobre</a><a href="#faq">FAQs</a><button data-legal="privacy">Privacidade</button><button data-legal="terms">Termos</button></div></div></footer>
 
 <div class="modal" id="authModal"><div class="box"><button class="x" data-close>×</button><h2 id="authTitle">Entrar</h2><div class="tabs"><button class="tab on" data-mode="login">Entrar</button><button class="tab" data-mode="signup">Criar conta</button></div><form id="authForm"><div class="field signup hidden"><label>Nome</label><input id="name" maxlength="80"></div><div class="field signup hidden"><label>Quero usar o Chama O Pro para</label><select id="type"><option value="client">Encontrar profissionais</option><option value="professional">Prestar serviços</option></select></div><div class="field"><label>Email</label><input id="email" type="email" required></div><div class="field"><label>Palavra-passe</label><input id="password" type="password" minlength="8" required></div><div class="signup hidden account-note">A conta de utilizador é gratuita. Se criares o teu primeiro perfil profissional, começam os 60 dias gratuitos.</div><label class="signup hidden consent"><input id="consent" type="checkbox"><span>Tenho 18 anos ou mais e aceito os Termos e a Política de Privacidade.</span></label><div class="msg" id="authMsg"></div><button class="btn primary full" id="authSubmit">Entrar</button></form></div></div>
 
@@ -54,7 +86,7 @@
 <datalist id="portugalPlaces"></datalist>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js"></script>
-<script type="module" src="./app.js?v=11"></script>
-<script type="module" src="./account.js?v=11"></script>
+<script type="module" src="./app.js?v=12"></script>
+<script type="module" src="./account.js?v=12"></script>
 </body>
 </html>
