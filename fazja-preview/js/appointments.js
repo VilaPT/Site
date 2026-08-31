@@ -5,6 +5,7 @@ let currentRequestId = null;
 let currentAppointment = null;
 let onChanged = () => {};
 let bound = false;
+let historyEntryActive = false;
 
 export function formatAppointment(value) {
   if (!value) return '';
@@ -20,10 +21,14 @@ function toLocalInput(value) {
   return local.toISOString().slice(0, 16);
 }
 
-function closeModal() {
+function closeModal({ fromHistory = false } = {}) {
   $('appointmentModal')?.classList.remove('open');
   currentRequestId = null;
   currentAppointment = null;
+
+  const shouldGoBack = historyEntryActive && !fromHistory && history.state?.copAppointment;
+  historyEntryActive = false;
+  if (shouldGoBack) history.back();
 }
 
 function setMessage(text = '', type = '') {
@@ -45,9 +50,12 @@ export async function openAppointmentScheduler(requestId) {
     setMessage('Não foi possível carregar a marcação.', 'err');
     return;
   }
+
   currentAppointment = data || null;
   $('appointmentStart').value = currentAppointment?.status === 'scheduled' ? toLocalInput(currentAppointment.starts_at) : '';
+  $('appointmentStart').min = toLocalInput(new Date(Date.now() + 60000).toISOString());
   $('appointmentNotes').value = currentAppointment?.notes || '';
+
   let duration = 60;
   if (currentAppointment?.starts_at && currentAppointment?.ends_at) {
     duration = Math.max(15, Math.round((new Date(currentAppointment.ends_at) - new Date(currentAppointment.starts_at)) / 60000));
@@ -55,6 +63,11 @@ export async function openAppointmentScheduler(requestId) {
   $('appointmentDuration').value = ['30','60','90','120'].includes(String(duration)) ? String(duration) : '60';
   $('appointmentTitle').textContent = currentAppointment?.status === 'scheduled' ? 'Alterar marcação' : 'Agendar serviço';
   $('appointmentCancel').classList.toggle('hidden', currentAppointment?.status !== 'scheduled');
+
+  if (!$('appointmentModal')?.classList.contains('open')) {
+    history.pushState({ ...(history.state || {}), copAppointment: true }, '', window.location.href);
+    historyEntryActive = true;
+  }
   $('appointmentModal')?.classList.add('open');
 }
 
@@ -71,6 +84,11 @@ async function submitAppointment(event) {
     setMessage('A data indicada não é válida.', 'err');
     return;
   }
+  if (start.getTime() <= Date.now()) {
+    setMessage('Escolhe uma data e hora futuras.', 'err');
+    return;
+  }
+
   const duration = Number($('appointmentDuration').value || 60);
   const end = new Date(start.getTime() + duration * 60000);
   setMessage('A guardar marcação…');
@@ -82,12 +100,18 @@ async function submitAppointment(event) {
   });
   if (error) {
     const text = String(error.message || '');
-    setMessage(text.includes('accepted proposal') ? 'Só podes agendar depois de a proposta ser aceite.' : 'Não foi possível guardar a marcação.', 'err');
+    if (text.includes('appointment conflict')) {
+      setMessage('Já tens outro serviço marcado nesse horário. Escolhe outro dia ou outra hora.', 'err');
+    } else if (text.includes('accepted proposal')) {
+      setMessage('Só podes agendar depois de a proposta ser aceite.', 'err');
+    } else {
+      setMessage('Não foi possível guardar a marcação.', 'err');
+    }
     return;
   }
   setMessage('Serviço agendado ✓', 'ok');
   await onChanged();
-  setTimeout(closeModal, 650);
+  setTimeout(() => closeModal(), 650);
 }
 
 async function cancelAppointment() {
@@ -99,15 +123,18 @@ async function cancelAppointment() {
   }
   setMessage('Marcação cancelada.', 'ok');
   await onChanged();
-  setTimeout(closeModal, 650);
+  setTimeout(() => closeModal(), 650);
 }
 
 function bind() {
   if (bound) return;
   bound = true;
   $('appointmentForm')?.addEventListener('submit', submitAppointment);
-  $('appointmentClose')?.addEventListener('click', closeModal);
+  $('appointmentClose')?.addEventListener('click', () => closeModal());
   $('appointmentCancel')?.addEventListener('click', cancelAppointment);
+  window.addEventListener('popstate', () => {
+    if ($('appointmentModal')?.classList.contains('open')) closeModal({ fromHistory: true });
+  });
 }
 
 export function initAppointments({ onAppointmentChange = () => {} } = {}) {
