@@ -11,6 +11,7 @@ import {
   membershipState,
 } from './js/memberships.js';
 import { initPortugalPlacesDatalist } from './js/location.js?v=11';
+import { initIdentityVerification } from './js/verification.js?v=15';
 
 const $ = (id) => document.getElementById(id);
 let session = null;
@@ -55,7 +56,7 @@ function bindGlobalUi() {
 
 const aboutHtml = `
   <div class="about-grid modal-about-grid">
-    <div class="about-card"><strong>Para quem precisa</strong><span>Descreve o problema, indica a localidade e encontra profissionais próximos. Podes comparar disponibilidade, distância, perfil e avaliações antes de fazeres o pedido.</span></div>
+    <div class="about-card"><strong>Para quem precisa</strong><span>Descreve o problema, indica a localidade e encontra profissionais próximos. Podes comparar disponibilidade, distância, perfil, identidade verificada e avaliações antes de fazeres o pedido.</span></div>
     <div class="about-card"><strong>Para quem sabe fazer</strong><span>Cria o teu perfil profissional, escolhe os serviços que prestas, define a tua localização base e até onde te deslocas. Recebes pedidos compatíveis, falas diretamente com o cliente e organizas os serviços na tua agenda.</span></div>
   </div>
   <p>O <strong>Chama O Pro</strong> aproxima quem precisa de resolver um problema de profissionais que prestam esse serviço na sua zona. Pesquisa pelo que precisas, encontra profissionais por proximidade, fala em privado, recebe uma proposta e, no final, confirma o serviço e deixa uma avaliação.</p>
@@ -65,9 +66,10 @@ const faqHtml = `
   <div class="faq-grid modal-faq-grid">
     <details><summary>O que é o Chama O Pro?</summary><p>É uma plataforma que liga pessoas que precisam de um serviço a profissionais adequados e próximos. Podes procurar por problema, serviço ou categoria e escolher a opção que melhor se adapta ao que precisas.</p></details>
     <details><summary>Como encontro um profissional?</summary><p>Indica o que precisas de resolver e a tua localidade ou código postal. O sistema identifica o tipo de serviço e procura profissionais compatíveis, dando prioridade à proximidade e mostrando disponibilidade, perfil e avaliações.</p></details>
+    <details><summary>Como funciona a verificação de conta?</summary><p>A verificação é gratuita. Primeiro adicionas uma fotografia de perfil onde exista apenas um rosto. Depois a câmara pede movimentos do rosto para confirmar presença real e compara o rosto ao vivo com a fotografia. Quando a correspondência é confirmada, o símbolo de verificação fica preenchido. Se alterares a fotografia, a verificação é retirada e podes fazê-la novamente.</p></details>
     <details><summary>Posso ler os comentários de outros clientes?</summary><p>Sim. As avaliações e comentários deixados após serviços concluídos aparecem no perfil público do profissional. O profissional também consegue consultar as avaliações recebidas na sua área profissional.</p></details>
     <details><summary>Como é usada a localização?</summary><p>A localização serve para calcular a distância entre a zona do pedido e a base do profissional. Um profissional pode definir até onde aceita deslocar-se. A morada exata do profissional não é apresentada publicamente.</p></details>
-    <details><summary>O Chama O Pro é gratuito para clientes?</summary><p>Sim. Criar conta, pesquisar profissionais e fazer pedidos não tem custo para o cliente.</p></details>
+    <details><summary>O Chama O Pro é gratuito para clientes?</summary><p>Sim. Criar conta, pesquisar profissionais, verificar a conta e fazer pedidos não tem custo para o cliente.</p></details>
     <details><summary>Como funciona para profissionais?</summary><p>O profissional cria o perfil, escolhe os serviços que presta, a localização base e o raio de deslocação. Os primeiros 60 dias são gratuitos. O valor do plano profissional será sempre apresentado antes da ativação de qualquer pagamento.</p></details>
     <details><summary>O profissional paga por cada contacto ou por cada trabalho?</summary><p>Não cobramos créditos por contacto nem comissão sobre o valor de cada serviço. O modelo profissional é baseado num plano.</p></details>
     <details><summary>Como funciona a agenda?</summary><p>Depois de uma proposta ser aceite, o profissional pode marcar o dia e a hora do serviço. A marcação fica visível para ambas as partes e pode ser alterada ou cancelada pelo profissional.</p></details>
@@ -86,11 +88,11 @@ function bindLegalUi() {
     faq: { title: 'Perguntas frequentes', html: faqHtml },
     privacy: {
       title: 'Política de Privacidade',
-      body: 'O Chama O Pro utiliza os dados necessários para criar contas, apresentar perfis profissionais, guardar pedidos, gerir marcações, avaliações e melhorar a pesquisa de serviços. A autenticação e a base de dados usam infraestrutura Supabase. A localização indicada é usada para calcular proximidade entre pedidos e profissionais. Não vendemos dados pessoais a anunciantes.',
+      body: 'O Chama O Pro utiliza os dados necessários para criar contas, apresentar perfis profissionais, guardar pedidos, gerir marcações, avaliações e melhorar a pesquisa de serviços. A fotografia de perfil pode ser apresentada publicamente. No protótipo de verificação facial, a comparação e a prova de movimento são processadas no dispositivo; o vídeo ao vivo e o vetor biométrico não são guardados, sendo registados apenas o resultado, a data e pontuações técnicas da verificação. A autenticação e a base de dados usam infraestrutura Supabase. A localização indicada é usada para calcular proximidade entre pedidos e profissionais. Não vendemos dados pessoais a anunciantes.',
     },
     terms: {
       title: 'Termos de Utilização',
-      body: 'A conta de utilizador é gratuita. O modo profissional inclui 60 dias gratuitos a partir da criação do primeiro perfil profissional. Depois desse período, o perfil profissional deixa de aparecer publicamente sem uma subscrição ativa. O valor da mensalidade será apresentado antes da ativação do pagamento. Cada profissional é responsável pela informação do perfil, qualificações, preços, marcações e execução do serviço.',
+      body: 'A conta de utilizador é gratuita. A verificação de identidade também é gratuita e serve como um sinal adicional de confiança, não como garantia de competência profissional. O modo profissional inclui 60 dias gratuitos a partir da criação do primeiro perfil profissional. Depois desse período, o perfil profissional deixa de aparecer publicamente sem uma subscrição ativa. O valor da mensalidade será apresentado antes da ativação do pagamento. Cada profissional é responsável pela informação do perfil, qualificações, preços, marcações e execução do serviço.',
     },
   };
 
@@ -122,6 +124,7 @@ async function init() {
     },
     onToast: toast,
   });
+  await initIdentityVerification({ getSession, toast });
   const [searchData] = await Promise.all([
     initSearch({ getSession, onRequest: requestService }),
     loadPlan(),
