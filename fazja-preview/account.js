@@ -1,8 +1,8 @@
 import { supabase as A } from './js/supabase.js';
 import { getSession } from './js/auth.js';
-import { requestProfessionalMode } from './js/professionals.js';
+import { requestProfessionalMode } from './js/professionals.js?v=11';
 import { getMembership, loadMembership, membershipState, trialDaysLeft } from './js/memberships.js';
-import { openServiceChat, initChat } from './js/chat.js?v=9';
+import { openServiceChat, initChat } from './js/chat.js?v=11';
 import { escapeHtml } from './js/utils.js';
 
 const $ = (id) => document.getElementById(id);
@@ -421,7 +421,7 @@ function startNotifications() {
       table: 'service_notifications',
       filter: `user_id=eq.${session.user.id}`,
     }, (payload) => {
-      showToast(payload.new?.title || 'Nova atualização no Faz Já');
+      showToast(payload.new?.title || 'Nova atualização no Chama O Pro');
       refreshNotificationBadges(false).catch(console.error);
       refreshVisibleArea().catch(console.error);
     })
