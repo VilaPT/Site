@@ -40,11 +40,13 @@ A API fica também disponível em `window.COPUI` para integrações progressivas
 Para novos componentes, usar:
 
 ```js
-import { openOverlay, closeOverlay } from './ui27.js?v=27';
+import { openOverlay, closeOverlay } from './ui27.js';
 
 openOverlay('meuModal', { focus: '#campoPrincipal' });
 closeOverlay('meuModal');
 ```
+
+O ficheiro já tem a versão no próprio nome (`ui27.js`), por isso os módulos internos importam-no sem query string. Isto evita criar duas instâncias diferentes do mesmo módulo quando o build global muda.
 
 O componente continua responsável pela sua lógica de negócio, por exemplo parar a câmara, remover uma subscrição Realtime ou limpar estado. O controlador central trata apenas do comportamento visual, foco, viewport e acessibilidade.
 
