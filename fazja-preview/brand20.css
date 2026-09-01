@@ -1,10 +1,10 @@
-/* Build 20: identidade visual Chama O Pro */
+/* Identidade visual Chama O Pro */
 .brand-mark{
   width:46px!important;
   height:46px!important;
   min-width:46px!important;
   border-radius:14px!important;
-  background:transparent url('./logo-chama-o-pro.svg') center/contain no-repeat!important;
+  background:#050505 url('./logo-chama-o-pro.jpg') center/cover no-repeat!important;
   color:transparent!important;
   font-size:0!important;
   line-height:0!important;
@@ -19,7 +19,7 @@ body::after{
   top:50%!important;
   transform:translate(-50%,-50%)!important;
   border-radius:0!important;
-  background:transparent url('./logo-chama-o-pro.svg') center/contain no-repeat!important;
+  background:#050505 url('./logo-chama-o-pro.jpg') center/cover no-repeat!important;
   color:transparent!important;
   font-size:0!important;
   box-shadow:none!important;
