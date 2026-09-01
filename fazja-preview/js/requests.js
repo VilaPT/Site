@@ -3,7 +3,7 @@ import { getSession, requireAuth } from './auth.js';
 import { getSearchContext, resolveSkill } from './search.js?v=11';
 import { openServiceChat } from './chat.js?v=11';
 import { normalizeLocation, resolvePortugalLocation } from './location.js?v=11';
-import { openOverlay, closeOverlay, navigateSection } from './ui27.js?v=27';
+import { openOverlay, closeOverlay, navigateSection } from './ui27.js';
 
 const $ = (id) => document.getElementById(id);
 let targetProfessional = null;
