@@ -34,7 +34,7 @@
       try {
         const versionResponse = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
         const version = await versionResponse.json();
-        const build = String(version.build || '28');
+        const build = String(version.build || '29');
         const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
         let html = await appResponse.text();
         html = html.replace('<head>', '<head><base href="../fazja-preview/">');
@@ -42,7 +42,7 @@
         html = html.replace(/account\.css\?v=\d+/g, 'account.css?v=' + build);
         html = html.replace(/app\.js\?v=\d+/g, 'app.js?v=' + build);
         html = html.replace(/account\.js\?v=\d+/g, 'account.js?v=' + build);
-        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand20.css?v=' + build + '"><link rel="stylesheet" href="./ux24.css?v=' + build + '"><link rel="stylesheet" href="./ux25.css?v=' + build + '"><style id="copBuild26Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
+        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand20.css?v=' + build + '"><link rel="stylesheet" href="./ux24.css?v=' + build + '"><link rel="stylesheet" href="./ux25.css?v=' + build + '"><link rel="stylesheet" href="./verification29.css?v=' + build + '"><style id="copBuild26Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
         html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script><script type="module" src="./enhancements26.js?v=' + build + '"><\/script><script type="module" src="./navigation25.js?v=' + build + '"><\/script></body>');
         const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
         if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
