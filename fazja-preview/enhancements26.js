@@ -1,4 +1,4 @@
-/* Build 26 — mensagens apenas entre utilizadores e contador persistente de não lidas. */
+/* Build 26, atualizado no Build 38: mensagens apenas entre utilizadores e contador persistente vindo do backend. */
 import { supabase as S } from './js/supabase.js';
 import { getSession } from './js/auth.js';
 
@@ -50,7 +50,7 @@ function badgeElement(create = true) {
     badge = document.createElement('span');
     badge.className = 'notification-badge cop-messages-badge';
     badge.setAttribute('aria-label', 'Mensagens não lidas');
-    nav.appendChild(badge);
+    (nav.querySelector('.nav-icon') || nav).appendChild(badge);
   }
   return badge;
 }
@@ -64,7 +64,7 @@ function setBadgeValue(count) {
   const badge = badgeElement(true);
   if (!badge) return;
   badge.textContent = total > 9 ? '9+' : String(total);
-  badge.setAttribute('aria-label', `${total} ${total === 1 ? 'mensagem não lida' : 'mensagens não lidas'}`);
+  badge.setAttribute('aria-label', `${total} ${total === 1 ? 'notificação de mensagem não lida' : 'notificações de mensagens não lidas'}`);
 }
 
 async function refreshMessagesBadge() {
@@ -74,12 +74,12 @@ async function refreshMessagesBadge() {
     setBadgeValue(0);
     return;
   }
-  const { data, error } = await S.rpc('unread_user_message_count');
+  const { data, error } = await S.rpc('notification_counts');
   if (error) {
     console.error('Não foi possível atualizar o contador de mensagens:', error);
     return;
   }
-  setBadgeValue(Number(data || 0));
+  setBadgeValue(Number(data?.messages_count || 0));
 }
 
 async function markThreadRead(requestId) {
@@ -90,6 +90,7 @@ async function markThreadRead(requestId) {
     return;
   }
   await refreshMessagesBadge();
+  document.dispatchEvent(new CustomEvent('cop:notifications-refresh'));
 }
 
 async function openMessagesPage() {
@@ -170,20 +171,24 @@ async function startRealtime() {
   }
 
   const uid = session.user.id;
-  realtimeChannel = S.channel(`direct-messages-26-${uid}-${Date.now()}`)
+  const refresh = () => refreshMessagesBadge().catch(console.error);
+  realtimeChannel = S.channel(`direct-messages-38-${uid}-${Date.now()}`)
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_messages' }, (payload) => {
-      if (payload.new?.sender_id === uid) return;
+      if (payload.new?.sender_id === uid) { refresh(); return; }
       const requestId = payload.new?.request_id;
       const chatOpen = $('communityChatModal')?.classList.contains('open');
       if (chatOpen && activeDirectThreadId && requestId === activeDirectThreadId) {
         markThreadRead(requestId).catch(console.error);
       } else {
-        refreshMessagesBadge().catch(console.error);
+        refresh();
       }
     })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_messages' }, refresh)
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'user_messages' }, refresh)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'user_message_requests' }, refresh)
     .subscribe();
 
-  /* Recuperação discreta caso o Realtime esteja momentaneamente indisponível. */
+  /* O Realtime é um sinal; a fonte de verdade continua a ser notification_counts(). */
   badgeTimer = setInterval(() => refreshMessagesBadge().catch(() => {}), 30000);
 }
 
