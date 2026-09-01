@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b555d">
   <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
   <link rel="preload" href="../fazja-preview/logo-chama-o-pro-transparent.png" as="image" type="image/png">
   <style>
@@ -31,19 +34,44 @@
     (async function(){
       const startedAt = performance.now();
       const minimumLoadingMs = 3500;
+
+      async function enableFreshAssets(){
+        if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
+        try {
+          const registration = await navigator.serviceWorker.register('./cache-sw.js', { scope:'./', updateViaCache:'none' });
+          registration.update().catch(()=>{});
+          await navigator.serviceWorker.ready;
+          if (!navigator.serviceWorker.controller) {
+            await new Promise((resolve) => {
+              let settled = false;
+              const done = () => { if (settled) return; settled = true; resolve(); };
+              navigator.serviceWorker.addEventListener('controllerchange', done, { once:true });
+              setTimeout(done, 1400);
+            });
+          }
+        } catch (error) {
+          console.warn('Atualização automática de recursos indisponível:', error);
+        }
+      }
+
       try {
-        const versionResponse = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
-        const version = await versionResponse.json();
-        const build = String(version.build || '38');
-        const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
+        await enableFreshAssets();
+
+        const legacyUrl = new URL(location.href);
+        if (legacyUrl.searchParams.has('v')) {
+          legacyUrl.searchParams.delete('v');
+          history.replaceState(null, '', legacyUrl.pathname + legacyUrl.search + legacyUrl.hash);
+        }
+
+        const fresh = Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+        const appResponse = await fetch('../fazja-preview/index.html?fresh=' + encodeURIComponent(fresh), { cache:'no-store' });
+        if (!appResponse.ok) throw new Error('Falha ao carregar a aplicação');
         let html = await appResponse.text();
         html = html.replace('<head>', '<head><base href="../fazja-preview/">');
-        html = html.replace(/styles\.css\?v=\d+/g, 'styles.css?v=' + build);
-        html = html.replace(/account\.css\?v=\d+/g, 'account.css?v=' + build);
-        html = html.replace(/app\.js\?v=\d+/g, 'app.js?v=' + build);
-        html = html.replace(/account\.js\?v=\d+/g, 'account.js?v=' + build);
-        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand20.css?v=' + build + '"><link rel="stylesheet" href="./ux24.css?v=' + build + '"><link rel="stylesheet" href="./ux25.css?v=' + build + '"><link rel="stylesheet" href="./verification29.css?v=' + build + '"><link rel="stylesheet" href="./profile30.css?v=' + build + '"><link rel="stylesheet" href="./chat31.css?v=' + build + '"><link rel="stylesheet" href="./appointment32.css?v=' + build + '"><link rel="stylesheet" href="./ux33.css?v=' + build + '"><link rel="stylesheet" href="./ux34.css?v=' + build + '"><link rel="stylesheet" href="./directchat35.css?v=' + build + '"><link rel="stylesheet" href="./homepage36.css?v=' + build + '"><link rel="stylesheet" href="./homepage37.css?v=' + build + '"><link rel="stylesheet" href="./business37.css?v=' + build + '"><link rel="stylesheet" href="./social38.css?v=' + build + '"><style id="copBuild26Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
-        html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script><script type="module" src="./enhancements26.js?v=' + build + '"><\/script><script type="module" src="./navigation25.js?v=' + build + '"><\/script><script type="module" src="./homepage36.js?v=' + build + '"><\/script><script type="module" src="./homepage37.js?v=' + build + '"><\/script><script type="module" src="./business37.js?v=' + build + '"><\/script><script type="module" src="./social38.js?v=' + build + '"><\/script></body>');
+        html = html.replace(/\?v=\d+/g, '?fresh=' + fresh);
+        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?fresh=' + fresh + '"><link rel="stylesheet" href="./brand20.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux24.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux25.css?fresh=' + fresh + '"><link rel="stylesheet" href="./verification29.css?fresh=' + fresh + '"><link rel="stylesheet" href="./profile30.css?fresh=' + fresh + '"><link rel="stylesheet" href="./chat31.css?fresh=' + fresh + '"><link rel="stylesheet" href="./appointment32.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux33.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux34.css?fresh=' + fresh + '"><link rel="stylesheet" href="./directchat35.css?fresh=' + fresh + '"><link rel="stylesheet" href="./homepage36.css?fresh=' + fresh + '"><link rel="stylesheet" href="./homepage37.css?fresh=' + fresh + '"><link rel="stylesheet" href="./business37.css?fresh=' + fresh + '"><link rel="stylesheet" href="./social38.css?fresh=' + fresh + '"><link rel="stylesheet" href="./professional-activity.css?fresh=' + fresh + '"><style id="copBuild26Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
+        html = html.replace('</body>', '<script type="module" src="./js/community.js?fresh=' + fresh + '"><\/script><script type="module" src="./enhancements26.js?fresh=' + fresh + '"><\/script><script type="module" src="./navigation25.js?fresh=' + fresh + '"><\/script><script type="module" src="./homepage36.js?fresh=' + fresh + '"><\/script><script type="module" src="./homepage37.js?fresh=' + fresh + '"><\/script><script type="module" src="./business37.js?fresh=' + fresh + '"><\/script><script type="module" src="./social38.js?fresh=' + fresh + '"><\/script><script type="module" src="./professional-activity.js?fresh=' + fresh + '"><\/script></body>');
+
         const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
         if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
         document.open();
