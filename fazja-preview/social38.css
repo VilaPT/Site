@@ -1,0 +1,143 @@
+/* Build 38: notificações, comentários e ações sociais alinhadas com o backend. */
+
+/* Badge único: círculo vermelho, número centrado e sem formato de cápsula. */
+.notification-badge,
+.cop-root-badge,
+.cop-messages-badge,
+.community-message-badge{
+  box-sizing:border-box!important;
+  width:19px!important;
+  min-width:19px!important;
+  max-width:19px!important;
+  height:19px!important;
+  min-height:19px!important;
+  padding:0!important;
+  border:2px solid #fff!important;
+  border-radius:50%!important;
+  background:#d62828!important;
+  color:#fff!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  letter-spacing:-.35px!important;
+  text-align:center!important;
+  box-shadow:0 2px 7px rgba(80,0,0,.28)!important;
+  z-index:8!important;
+}
+
+.mobile-nav>button>.nav-icon{position:relative!important;overflow:visible!important}
+.mobile-nav>button>.nav-icon>.notification-badge{
+  position:absolute!important;
+  top:-5px!important;
+  right:-8px!important;
+  left:auto!important;
+  bottom:auto!important;
+  margin:0!important;
+  transform:none!important;
+}
+
+/* Nunca usar Conta como substituto do separador Mensagens. */
+#navAccount>.community-message-badge,
+#navAccount .community-message-badge{display:none!important}
+
+#proCta>.notification-badge{
+  top:-7px!important;
+  right:-7px!important;
+  left:auto!important;
+}
+
+/* Comentários livres do perfil profissional. */
+.social38-profile-comments{
+  margin:20px 0 18px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#f8faf9;
+}
+.social38-profile-comments h3{margin:0 0 4px;color:var(--ink);font-size:18px}
+.social38-profile-comments .social38-sub{margin:0 0 13px;color:var(--muted);font-size:13px;line-height:1.45}
+.social38-comment-form{display:grid;gap:8px;margin:12px 0 15px}
+.social38-comment-form textarea,
+.social38-inline-reply textarea{
+  width:100%;
+  resize:vertical;
+  min-height:70px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:11px 12px;
+  background:#fff;
+  color:var(--ink);
+  font:inherit;
+}
+.social38-comment-form button,
+.social38-inline-reply button{
+  justify-self:end;
+  border:0;
+  border-radius:12px;
+  padding:9px 13px;
+  background:var(--petrol);
+  color:#fff;
+  font-weight:800;
+}
+.social38-comments-list{display:grid;gap:10px}
+.social38-comment{
+  --comment-depth:0;
+  margin-left:min(calc(var(--comment-depth) * 18px),72px);
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#fff;
+}
+.social38-comment-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.social38-comment-head .community-person{min-width:0}
+.social38-comment-date{font-size:11px;color:var(--muted);white-space:nowrap}
+.social38-comment-body{font-size:14px;line-height:1.5;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
+.social38-comment.deleted .social38-comment-body{color:var(--muted);font-style:italic}
+.social38-comment-actions,
+.social38-review-actions,
+.social38-message-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}
+.social38-action{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:var(--petrol);
+  padding:4px 2px;
+  font-size:12px;
+  font-weight:800;
+}
+.social38-action.delete{color:#b42318}
+.social38-inline-reply{display:grid;gap:7px;margin-top:8px}
+.social38-inline-reply .row{display:flex;justify-content:flex-end;gap:7px}
+.social38-inline-reply .cancel{background:#e8eeee;color:var(--ink)}
+.social38-empty{padding:12px;text-align:center;color:var(--muted);font-size:13px}
+.social38-login-comment{width:100%;border:1px solid var(--mid);border-radius:13px;padding:10px;background:#fff;color:var(--petrol);font-weight:850}
+
+/* Botão de eliminar dentro das bolhas, discreto mas explícito. */
+.social38-delete-message{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:#b42318;
+  padding:2px 0;
+  margin-top:3px;
+  font-size:10.5px;
+  font-weight:800;
+  opacity:.8;
+}
+.social38-delete-message:active{opacity:1}
+.chat-message.mine .social38-delete-message,
+.community-chat-bubble.mine .social38-delete-message{display:inline-flex}
+
+.community-review>.social38-review-actions,
+.community-reply>.social38-review-actions{margin-top:5px}
+
+@media(max-width:560px){
+  .social38-profile-comments{padding:13px;margin:16px 0}
+  .social38-comment{margin-left:min(calc(var(--comment-depth) * 10px),30px)}
+  .notification-badge,.cop-root-badge,.cop-messages-badge,.community-message-badge{
+    width:18px!important;min-width:18px!important;max-width:18px!important;height:18px!important;min-height:18px!important;font-size:8.5px!important
+  }
+  .mobile-nav>button>.nav-icon>.notification-badge{top:-5px!important;right:-7px!important}
+}
