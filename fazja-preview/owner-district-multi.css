@@ -1,6 +1,7 @@
 /* Seleção visual e responsiva de distritos na consola Owner. */
 .owner-district-native-hidden{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important}
-.owner-district-selector{display:grid;gap:12px;margin-bottom:12px;padding:14px;border:1px solid #dbe8e8;border-radius:18px;background:#f8fbfb}
+.owner-directory-tools:has(.owner-district-selector){grid-template-columns:minmax(0,1fr) auto!important;align-items:start}
+.owner-district-selector{grid-column:1/-1;display:grid;gap:12px;margin-bottom:4px;padding:14px;border:1px solid #dbe8e8;border-radius:18px;background:#f8fbfb}
 .owner-district-selector-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .owner-district-selector-head strong{display:block;color:var(--ink);font-size:15px}
 .owner-district-selector-head>div>span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
@@ -14,9 +15,9 @@
 .owner-district-check{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;border:1px solid #b8cbcb;border-radius:7px;background:#fff;color:transparent;font-size:12px;line-height:1}
 .owner-district-choice[aria-pressed="true"] .owner-district-check{background:#17a7a1;border-color:#17a7a1;color:#fff}
 .owner-district-choice.all[aria-pressed="true"] .owner-district-check{background:#fff;border-color:#fff;color:#0d5e64}
-.owner-directory-tools{align-items:start}
 .owner-district-empty{margin-top:10px}
 @media(max-width:720px){
+  .owner-directory-tools:has(.owner-district-selector){grid-template-columns:1fr!important}
   .owner-district-selector-head{flex-direction:column}
   .owner-district-summary{max-width:none;text-align:left}
   .owner-district-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
