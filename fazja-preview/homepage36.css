@@ -1,0 +1,21 @@
+/* Build 36 — categorias primeiro, pesquisa/localização depois. */
+.cop-home-search{
+  padding-top:8px!important;
+}
+.cop-home-search .search-card{
+  margin-top:12px!important;
+}
+.cop-search-head p{
+  margin-bottom:0!important;
+}
+.cop-home-search.cop-search-attention .search-card{
+  animation:copSearchGuide .7s ease both;
+}
+@keyframes copSearchGuide{
+  0%{box-shadow:0 0 0 0 rgba(16,185,180,0),var(--shadow)}
+  45%{box-shadow:0 0 0 5px rgba(16,185,180,.16),var(--shadow)}
+  100%{box-shadow:var(--shadow)}
+}
+@media(prefers-reduced-motion:reduce){
+  .cop-home-search.cop-search-attention .search-card{animation:none!important}
+}
