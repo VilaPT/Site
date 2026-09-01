@@ -1,0 +1,131 @@
+/* Build 34 — alinhamento óptico rigoroso dos cinco itens da navegação.
+   Cada ícone e respetivo nome usam zonas fixas independentes do comprimento do texto. */
+
+.mobile-nav{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:0!important;
+}
+
+.mobile-nav>button{
+  position:relative!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:56px!important;
+  margin:0!important;
+  padding:6px 0!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:26px 16px!important;
+  align-content:center!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:3px!important;
+  text-align:center!important;
+}
+
+.mobile-nav>button>.nav-icon{
+  grid-row:1!important;
+  width:26px!important;
+  height:26px!important;
+  min-width:26px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  line-height:0!important;
+  justify-self:center!important;
+  align-self:center!important;
+}
+
+.mobile-nav>button>.nav-icon svg{
+  display:block!important;
+  width:22px!important;
+  height:22px!important;
+  margin:0 auto!important;
+  transform:none!important;
+}
+
+.mobile-nav>button>span:last-child{
+  grid-row:2!important;
+  display:block!important;
+  width:100%!important;
+  height:16px!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:16px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  justify-self:stretch!important;
+}
+
+/* O badge fica ancorado ao centro do ícone, e não à extremidade do botão. */
+.mobile-nav #navMessages .notification-badge,
+.mobile-nav #navMessages .cop-messages-badge{
+  top:3px!important;
+  left:calc(50% + 8px)!important;
+  right:auto!important;
+}
+
+@media(min-width:721px){
+  .mobile-nav{
+    width:min(720px,calc(100% - 32px))!important;
+    padding:5px!important;
+  }
+  .mobile-nav>button{
+    min-height:58px!important;
+    grid-template-rows:27px 17px!important;
+    gap:3px!important;
+    font-size:11.5px!important;
+  }
+  .mobile-nav>button>.nav-icon{
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+  }
+  .mobile-nav>button>.nav-icon svg{
+    width:22px!important;
+    height:22px!important;
+  }
+  .mobile-nav>button>span:last-child{
+    height:17px!important;
+    line-height:17px!important;
+  }
+}
+
+@media(max-width:720px){
+  .mobile-nav{
+    width:min(560px,calc(100% - 16px))!important;
+    padding:5px 4px!important;
+  }
+  .mobile-nav>button{
+    min-height:52px!important;
+    grid-template-rows:24px 14px!important;
+    gap:2px!important;
+    font-size:9.5px!important;
+  }
+  .mobile-nav>button>.nav-icon{
+    width:24px!important;
+    height:24px!important;
+    min-width:24px!important;
+  }
+  .mobile-nav>button>.nav-icon svg{
+    width:21px!important;
+    height:21px!important;
+  }
+  .mobile-nav>button>span:last-child{
+    height:14px!important;
+    line-height:14px!important;
+  }
+  .mobile-nav #navMessages .notification-badge,
+  .mobile-nav #navMessages .cop-messages-badge{
+    top:2px!important;
+    left:calc(50% + 7px)!important;
+  }
+}
+
+@media(max-width:390px){
+  .mobile-nav>button{font-size:9px!important}
+}
