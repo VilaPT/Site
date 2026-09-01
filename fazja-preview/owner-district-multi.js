@@ -1,3 +1,5 @@
+import './pro-editor-runtime.js';
+
 /* Filtro visual multi-distrito da consola Owner. Mantém a consulta base sem dados privados. */
 const $ = (id) => document.getElementById(id);
 const districts = ['Aveiro','Beja','Braga','Bragança','Castelo Branco','Coimbra','Évora','Faro','Guarda','Leiria','Lisboa','Portalegre','Porto','Santarém','Setúbal','Viana do Castelo','Vila Real','Viseu','Açores','Madeira'];
