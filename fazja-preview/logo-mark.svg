@@ -1,18 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Chama O Pro">
   <defs>
-    <linearGradient id="bg" x1="8" y1="6" x2="57" y2="59" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0b6970"/>
-      <stop offset="1" stop-color="#043f48"/>
+    <linearGradient id="bg" x1="7" y1="3" x2="58" y2="61" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07818a"/><stop offset=".46" stop-color="#075b65"/><stop offset="1" stop-color="#033b43"/>
     </linearGradient>
-    <linearGradient id="accent" x1="37" y1="13" x2="52" y2="48" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#5be5dc"/>
-      <stop offset="1" stop-color="#13b9b5"/>
-    </linearGradient>
+    <radialGradient id="leftHead" cx="38%" cy="28%" r="72%"><stop stop-color="#fff"/><stop offset=".8" stop-color="#edf5f4"/><stop offset="1" stop-color="#d7e7e5"/></radialGradient>
+    <radialGradient id="rightHead" cx="35%" cy="25%" r="80%"><stop stop-color="#75fff1"/><stop offset=".55" stop-color="#22d8cf"/><stop offset="1" stop-color="#079d9d"/></radialGradient>
+    <linearGradient id="rightBody" x1="37" y1="28" x2="51" y2="52" gradientUnits="userSpaceOnUse"><stop stop-color="#54eee3"/><stop offset="1" stop-color="#0eb2af"/></linearGradient>
+    <linearGradient id="leftBody" x1="13" y1="30" x2="31" y2="53" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#dceceb"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="2.1" flood-color="#001d21" flood-opacity=".34"/></filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
   </defs>
   <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#bg)"/>
-  <circle cx="22" cy="20" r="6" fill="#fff"/>
-  <circle cx="42" cy="20" r="6" fill="url(#accent)"/>
-  <path d="M11.5 48.5c0-10.4 5.3-17.2 13.8-17.2 5.4 0 9 3 12.1 7.3l-6.1 5.5c-2.1-3-3.8-4.4-6-4.4-3.4 0-5.2 3.1-5.2 8.8v2.8h-8.6z" fill="#fff"/>
-  <path d="M52.5 48.5c0-10.4-5.3-17.2-13.8-17.2-4.9 0-8.4 2.5-11.4 6.2l6.2 5.4c1.8-2.2 3.3-3.2 5.2-3.2 3.4 0 5.2 3.1 5.2 8.8v2.8h8.6z" fill="url(#accent)"/>
-  <path d="M22.5 42.1 29 48.4 43.5 34" fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="22" cy="8" rx="28" ry="10" fill="#28d8d2" opacity=".13" filter="url(#soft)"/>
+  <path d="M5 43c12 14 37 18 54 3v13H5z" fill="#022f36" opacity=".18"/>
+  <g filter="url(#shadow)">
+    <circle cx="20.5" cy="19" r="6.1" fill="url(#leftHead)"/>
+    <circle cx="43.5" cy="19" r="5.8" fill="url(#rightHead)"/>
+    <path d="M11.8 49.5c.1-10.9 5.2-18.2 13.3-18.2 5.7 0 9.4 3 12.6 7.5l-6.2 5.7c-2.1-3.1-4-4.7-6.4-4.7-3.4 0-5.2 3.4-5.2 9.7v2.2h-8.1z" fill="url(#leftBody)"/>
+    <path d="M52.2 49.5c-.1-10.9-5.2-18.2-13.3-18.2-5.5 0-9.1 2.8-12.2 6.8l6.1 5.6c1.9-2.6 3.7-3.9 6.1-3.9 3.4 0 5.2 3.4 5.2 9.7v2.2h8.1z" fill="url(#rightBody)"/>
+    <path d="M21.8 41.6 29.4 48.7 45.3 33" fill="none" stroke="#fff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M8 15c11-11 33-13 47-2" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="1.2" stroke-linecap="round"/>
+  <rect x="2.5" y="2.5" width="59" height="59" rx="17.5" fill="none" stroke="#8dfff5" stroke-opacity=".11"/>
 </svg>
