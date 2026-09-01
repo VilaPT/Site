@@ -1,0 +1,105 @@
+/* Build 33 — 5.ª interação isolada + alinhamento uniforme da navegação.
+   Não altera lógica de mensagens, categorias, pedidos ou autenticação. */
+
+/* 5.ª interação: Guardar/Pedir serviço abre sempre no viewport real. */
+body:has(#requestModal.open){
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+  overflow:hidden!important;
+}
+html:has(#requestModal.open){overflow:hidden!important}
+
+#requestModal.open{
+  position:fixed!important;
+  inset:0!important;
+  z-index:245!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  background:rgba(5,14,16,.60)!important;
+}
+
+#requestModal.open>.box{
+  width:min(610px,100%)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Os cinco destinos ocupam exatamente 1/5 da barra cada um. */
+.mobile-nav{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  column-gap:0!important;
+}
+.mobile-nav>button{
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding-left:4px!important;
+  padding-right:4px!important;
+  justify-self:stretch!important;
+  text-align:center!important;
+}
+.mobile-nav>button>.nav-icon{
+  flex:0 0 auto!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.mobile-nav>button>span:last-child{
+  min-width:0!important;
+  text-align:center!important;
+  line-height:1.1!important;
+}
+
+@media(min-width:721px){
+  .mobile-nav{
+    width:min(720px,calc(100% - 32px))!important;
+    gap:0!important;
+    padding:6px!important;
+  }
+  .mobile-nav>button{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+  }
+  .mobile-nav>button>.nav-icon{margin:0!important}
+}
+
+@media(max-width:720px){
+  #requestModal.open{padding:8px!important}
+  #requestModal.open>.box{max-height:calc(100dvh - 16px)!important}
+
+  .mobile-nav{
+    width:min(560px,calc(100% - 16px))!important;
+    gap:0!important;
+    padding:5px 4px!important;
+  }
+  .mobile-nav>button{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:25px 13px!important;
+    place-items:center!important;
+    gap:2px!important;
+    padding:7px 1px 6px!important;
+  }
+  .mobile-nav>button>.nav-icon{margin:0 auto!important}
+  .mobile-nav>button>span:last-child{
+    width:100%!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media(max-width:390px){
+  .mobile-nav>button{padding-left:0!important;padding-right:0!important}
+}
