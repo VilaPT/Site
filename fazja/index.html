@@ -26,7 +26,7 @@
       try {
         const versionResponse = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
         const version = await versionResponse.json();
-        const build = String(version.build || '21');
+        const build = String(version.build || '22');
         const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
         let html = await appResponse.text();
         html = html.replace('<head>', '<head><base href="../fazja-preview/">');
@@ -34,8 +34,8 @@
         html = html.replace(/account\.css\?v=\d+/g, 'account.css?v=' + build);
         html = html.replace(/app\.js\?v=\d+/g, 'app.js?v=' + build);
         html = html.replace(/account\.js\?v=\d+/g, 'account.js?v=' + build);
-        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand-refresh.css?v=' + build + '"><link rel="stylesheet" href="./mockup21.css?v=' + build + '"><style id="copBuild21Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.05s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(1px);transform:translateY(6px)}50%{opacity:.72;filter:blur(.35px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
-        html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script></body>');
+        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand-refresh.css?v=' + build + '"><link rel="stylesheet" href="./mockup21.css?v=' + build + '"><link rel="stylesheet" href="./ux22.css?v=' + build + '"><style id="copBuild21Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.05s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(1px);transform:translateY(6px)}50%{opacity:.72;filter:blur(.35px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
+        html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script><script type="module" src="./navigation22.js?v=' + build + '"><\/script></body>');
         const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
         if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
         document.open();
