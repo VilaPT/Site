@@ -34,7 +34,7 @@
       try {
         const versionResponse = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
         const version = await versionResponse.json();
-        const build = String(version.build || '26');
+        const build = String(version.build || '28');
         const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
         let html = await appResponse.text();
         html = html.replace('<head>', '<head><base href="../fazja-preview/">');
