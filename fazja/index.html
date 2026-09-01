@@ -6,31 +6,25 @@
   <meta name="theme-color" content="#0b555d">
   <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
   <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
-  <link rel="preload" href="../fazja-preview/logo-chama-o-pro.svg" as="image">
+  <link rel="preload" href="../fazja-preview/logo-chama-o-pro.jpg" as="image" type="image/jpeg">
   <style>
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(145deg,#0b555d,#073d44);color:#fff;min-height:100svh;overflow:hidden}
     .loader{position:fixed;inset:0;display:grid;place-items:center;padding:24px}
-    .loader-stack{display:grid;place-items:center;gap:18px;text-align:center;animation:loaderAway .68s ease 2.82s forwards}
-    .loader-logo{display:block;width:clamp(175px,48vw,245px);height:auto;filter:drop-shadow(0 12px 22px rgba(0,0,0,.18));opacity:0;transform:scale(.9);animation:logoIn .72s cubic-bezier(.18,.76,.22,1) .08s forwards,logoGlow 1.05s ease-in-out .82s infinite alternate}
-    .brand-sequence{display:flex;align-items:baseline;justify-content:center;gap:.2em;font-size:clamp(36px,9.8vw,62px);line-height:1;font-weight:1000;letter-spacing:-2.5px;white-space:nowrap}
-    .piece{display:inline-block;opacity:0;transform:translateY(10px);animation:pieceIn .48s cubic-bezier(.2,.72,.22,1) forwards}
-    .piece.chama{animation-delay:.72s}.piece.o{animation-delay:1.22s}.piece.pro{animation-delay:1.68s}.piece.bang{margin-left:-.11em;position:relative;animation-name:pieceIn,bangGlow;animation-duration:.48s,.82s;animation-delay:2.08s,2.42s;animation-timing-function:cubic-bezier(.2,.72,.22,1),ease-in-out;animation-fill-mode:forwards,both;animation-iteration-count:1,infinite;animation-direction:normal,alternate}
-    .loader.error .loader-stack{animation:none}.loader.error .loader-logo{opacity:1;transform:none;animation:none;width:150px}.loader.error .piece{opacity:1;transform:none;animation:none}.loader.error{gap:12px}.loader span{color:#dce9e9;font-size:14px}
+    .loader-stack{display:grid;place-items:center;text-align:center;animation:loaderAway .68s ease 2.82s forwards}
+    .loader-logo{display:block;width:clamp(175px,48vw,245px);height:auto;border-radius:18%;opacity:0;transform:scale(.9);animation:logoIn .58s cubic-bezier(.18,.76,.22,1) .08s forwards,logoPulseGlow 1.05s ease-in-out .66s infinite alternate}
+    .loader.error .loader-stack{gap:12px;animation:none}.loader.error .loader-logo{opacity:1;transform:none;animation:none;width:150px}.loader.error{gap:12px}.loader span{color:#dce9e9;font-size:14px}
     @keyframes logoIn{to{opacity:1;transform:scale(1)}}
-    @keyframes logoGlow{from{filter:drop-shadow(0 10px 20px rgba(0,0,0,.18)) drop-shadow(0 0 8px rgba(74,232,225,.12));transform:scale(1)}to{filter:drop-shadow(0 14px 24px rgba(0,0,0,.2)) drop-shadow(0 0 23px rgba(74,232,225,.48));transform:scale(1.025)}}
-    @keyframes pieceIn{to{opacity:1;transform:translateY(0)}}
-    @keyframes bangGlow{from{text-shadow:0 0 7px rgba(255,255,255,.22);transform:scale(1)}to{text-shadow:0 0 17px rgba(255,255,255,.9),0 0 34px rgba(68,229,224,.58);transform:scale(1.1)}}
+    @keyframes logoPulseGlow{from{filter:drop-shadow(0 10px 20px rgba(0,0,0,.22)) drop-shadow(0 0 8px rgba(74,232,225,.18));transform:scale(1)}to{filter:drop-shadow(0 15px 28px rgba(0,0,0,.28)) drop-shadow(0 0 28px rgba(74,232,225,.72));transform:scale(1.045)}}
     @keyframes loaderAway{to{opacity:0;filter:blur(1.5px);transform:scale(.985)}}
-    @media(max-width:390px){.loader-stack{gap:15px}.brand-sequence{font-size:clamp(32px,9.4vw,42px)}.loader-logo{width:clamp(165px,46vw,205px)}}
-    @media(prefers-reduced-motion:reduce){.loader-stack,.loader-logo,.piece,.piece.bang{animation:none!important;opacity:1;transform:none}}
+    @media(max-width:390px){.loader-logo{width:clamp(165px,46vw,205px)}}
+    @media(prefers-reduced-motion:reduce){.loader-stack,.loader-logo{animation:none!important;opacity:1;transform:none}}
   </style>
 </head>
 <body>
-  <div class="loader" id="openingLoader">
+  <div class="loader" id="openingLoader" aria-label="A abrir o Chama O Pro">
     <div class="loader-stack">
-      <img class="loader-logo" src="../fazja-preview/logo-chama-o-pro.svg" alt="Logótipo Chama O Pro">
-      <div class="brand-sequence" aria-label="Chama O Pro!"><span class="piece chama">Chama</span><span class="piece o">O</span><span class="piece pro">Pro</span><span class="piece bang">!</span></div>
+      <img class="loader-logo" src="../fazja-preview/logo-chama-o-pro.jpg" alt="Símbolo do Chama O Pro" fetchpriority="high">
     </div>
   </div>
   <script>
@@ -40,7 +34,7 @@
       try {
         const versionResponse = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
         const version = await versionResponse.json();
-        const build = String(version.build || '20');
+        const build = String(version.build || '21');
         const appResponse = await fetch('../fazja-preview/index.html?build=' + encodeURIComponent(build) + '&t=' + Date.now(), { cache: 'no-store' });
         let html = await appResponse.text();
         html = html.replace('<head>', '<head><base href="../fazja-preview/">');
@@ -48,7 +42,7 @@
         html = html.replace(/account\.css\?v=\d+/g, 'account.css?v=' + build);
         html = html.replace(/app\.js\?v=\d+/g, 'app.js?v=' + build);
         html = html.replace(/account\.js\?v=\d+/g, 'account.js?v=' + build);
-        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand20.css?v=' + build + '"><style id="copBuild20Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
+        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?v=' + build + '"><link rel="stylesheet" href="./brand20.css?v=' + build + '"><style id="copBuild21Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
         html = html.replace('</body>', '<script type="module" src="./js/community.js?v=' + build + '"><\/script></body>');
         const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
         if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
@@ -58,7 +52,7 @@
       } catch (error) {
         const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
         if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
-        document.body.innerHTML = '<div class="loader error"><div class="loader-stack"><img class="loader-logo" src="../fazja-preview/logo-chama-o-pro.svg" alt="Logótipo Chama O Pro"><div class="brand-sequence"><span class="piece">Chama</span><span class="piece">O</span><span class="piece">Pro</span><span class="piece">!</span></div><strong>Não foi possível abrir o Chama O Pro.</strong><span>Verifica a ligação e tenta novamente.</span></div></div>';
+        document.body.innerHTML = '<div class="loader error"><div class="loader-stack"><img class="loader-logo" src="../fazja-preview/logo-chama-o-pro.jpg" alt="Símbolo do Chama O Pro"><strong>Não foi possível abrir o Chama O Pro.</strong><span>Verifica a ligação e tenta novamente.</span></div></div>';
       }
     })();
   </script>
