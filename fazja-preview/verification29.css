@@ -1,0 +1,39 @@
+/* Build 29 — correção isolada da janela de verificação de conta.
+   Não altera navegação, categorias, mensagens nem outros modais. */
+
+/* A animação de entrada do Build 28 deixa transform/filter no body.
+   Enquanto a verificação está aberta, removemos apenas nesse estado para que
+   o position:fixed volte a usar o viewport como referência. */
+body:has(#identityModal.open){
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+  overflow:hidden!important;
+}
+html:has(#identityModal.open){overflow:hidden!important}
+
+#identityModal.open{
+  position:fixed!important;
+  inset:0!important;
+  z-index:220!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  background:rgba(5,14,16,.60)!important;
+}
+
+#identityModal.open>.box{
+  width:min(620px,100%)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:560px){
+  #identityModal.open{padding:8px!important}
+  #identityModal.open>.box{max-height:calc(100dvh - 16px)!important}
+}
