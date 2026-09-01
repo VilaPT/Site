@@ -1,0 +1,38 @@
+/* Build 32 — correção isolada da janela de agendamento.
+   Não altera chat, mensagens, pedidos, categorias nem navegação. */
+
+/* O body mantém transform/filter da animação de entrada. Durante o agendamento,
+   removemos apenas nesse estado para que o modal fixed use o viewport real. */
+body:has(#appointmentModal.open){
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+  overflow:hidden!important;
+}
+html:has(#appointmentModal.open){overflow:hidden!important}
+
+#appointmentModal.open{
+  position:fixed!important;
+  inset:0!important;
+  z-index:240!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  background:rgba(5,14,16,.60)!important;
+}
+
+#appointmentModal.open>.box{
+  width:min(620px,100%)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:560px){
+  #appointmentModal.open{padding:8px!important}
+  #appointmentModal.open>.box{max-height:calc(100dvh - 16px)!important}
+}
