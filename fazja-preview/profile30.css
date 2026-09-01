@@ -1,0 +1,38 @@
+/* Build 30 — correção isolada do perfil público do profissional.
+   Não altera navegação, categorias, mensagens, pedidos nem outros modais. */
+
+/* O perfil público pode ser aberto depois de o utilizador já ter descido a página.
+   Nesse estado removemos transform/filter do body para que o modal fixed use o viewport. */
+body:has(#publicProModal.open){
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+  overflow:hidden!important;
+}
+html:has(#publicProModal.open){overflow:hidden!important}
+
+#publicProModal.open{
+  position:fixed!important;
+  inset:0!important;
+  z-index:210!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  background:rgba(5,14,16,.60)!important;
+}
+
+#publicProModal.open>.box{
+  width:min(760px,100%)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:560px){
+  #publicProModal.open{padding:8px!important}
+  #publicProModal.open>.box{max-height:calc(100dvh - 16px)!important}
+}
