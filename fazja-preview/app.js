@@ -1,6 +1,6 @@
 import { getSession, initAuth } from './js/auth.js';
 import { initSearch } from './js/search.js?v=13';
-import { initRequests, openRequest, requestService } from './js/requests.js?v=11';
+import { initRequests, openRequest, requestService } from './js/requests.js?v=28';
 import {
   initProfessionals,
   openProfessionalProfile,
