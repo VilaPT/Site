@@ -1,0 +1,39 @@
+/* Build 31 — correção isolada da janela de conversa de serviço.
+   Não altera Mensagens, categorias, pedidos, navegação nem outros modais. */
+
+/* O body mantém transform/filter após a animação de entrada. Enquanto o chat
+   está aberto, removemos apenas nesse estado para que position:fixed use o
+   viewport real como referência. */
+body:has(#chatModal.open){
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+  overflow:hidden!important;
+}
+html:has(#chatModal.open){overflow:hidden!important}
+
+#chatModal.open{
+  position:fixed!important;
+  inset:0!important;
+  z-index:230!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  background:rgba(5,14,16,.60)!important;
+}
+
+#chatModal.open>.box{
+  width:min(860px,100%)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:560px){
+  #chatModal.open{padding:8px!important}
+  #chatModal.open>.box{max-height:calc(100dvh - 16px)!important}
+}
