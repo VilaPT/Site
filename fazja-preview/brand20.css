@@ -1,4 +1,11 @@
 /* Identidade visual Chama O Pro */
+.top{
+  background:rgba(222,226,227,.90)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(120%)!important;
+  backdrop-filter:blur(18px) saturate(120%)!important;
+  border-bottom:1px solid rgba(82,98,101,.20)!important;
+  box-shadow:0 8px 24px rgba(7,61,68,.06)!important;
+}
 .brand-mark{
   width:46px!important;
   height:46px!important;
