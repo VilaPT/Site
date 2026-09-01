@@ -1,0 +1,46 @@
+/* Build 37 — centro visual do percurso categoria → serviço → localização. */
+.cop-choice-flow{
+  width:min(820px,calc(100% - 24px))!important;
+  margin:8px auto 0!important;
+  padding-top:8px!important;
+}
+.cop-choice-flow #servicesPanel{
+  width:100%!important;
+  max-width:760px!important;
+  margin:0 auto 14px!important;
+  text-align:center!important;
+}
+.cop-choice-flow #servicesTitle{text-align:center!important}
+.cop-choice-flow #serviceChips{
+  justify-content:center!important;
+  align-items:center!important;
+}
+.cop-choice-flow .cop-home-search{
+  width:100%!important;
+  max-width:760px!important;
+  margin:0 auto!important;
+  padding:0!important;
+}
+.cop-choice-flow .cop-search-head{text-align:center!important}
+.cop-choice-flow .search-card{
+  width:100%!important;
+  margin:12px auto 0!important;
+}
+.cop-choice-flow.cop-choice-active #servicesPanel{
+  animation:copChoiceReveal .42s ease both;
+}
+.category-card.cop-category-picked.active{
+  outline:2px solid rgba(11,85,93,.20)!important;
+  outline-offset:2px!important;
+}
+@keyframes copChoiceReveal{
+  from{opacity:.72;transform:translateY(6px)}
+  to{opacity:1;transform:none}
+}
+@media(max-width:720px){
+  .cop-choice-flow{width:calc(100% - 16px)!important;padding-left:0!important;padding-right:0!important}
+  .cop-choice-flow #serviceChips{justify-content:center!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .cop-choice-flow.cop-choice-active #servicesPanel{animation:none!important}
+}
