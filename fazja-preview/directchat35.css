@@ -1,0 +1,40 @@
+/* Build 35 — 6.ª interação: conversa direta entre utilizadores.
+   Alteração isolada ao #communityChatModal. Não altera lógica de mensagens,
+   pedidos de contacto, contadores, categorias, pedidos de serviço ou navegação. */
+
+/* A animação de entrada do body mantém transform/filter no estado final.
+   Enquanto a conversa direta está aberta, removemos esses efeitos apenas neste
+   estado para que position:fixed seja relativo ao viewport real. */
+body:has(#communityChatModal.open){
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+  overflow:hidden!important;
+}
+html:has(#communityChatModal.open){overflow:hidden!important}
+
+#communityChatModal.open{
+  position:fixed!important;
+  inset:0!important;
+  z-index:250!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  background:rgba(5,14,16,.60)!important;
+}
+
+#communityChatModal.open>.box{
+  width:min(760px,100%)!important;
+  max-height:calc(100dvh - 24px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:560px){
+  #communityChatModal.open{padding:8px!important}
+  #communityChatModal.open>.box{max-height:calc(100dvh - 16px)!important}
+}
