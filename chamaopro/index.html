@@ -54,7 +54,7 @@
         html=html.replace(/<head([^>]*)>/i,'<head$1><base href="../fazja-preview/">');
         html=html.replace(/\?v=\d+/g,'?fresh='+fresh);
 
-        const handoffStyle='<style id="copBootStyle">#copBootHandoff{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:linear-gradient(145deg,#0b555d,#073d44);opacity:1;transition:opacity .18s ease}#copBootHandoff.cop-boot-out{opacity:0;pointer-events:none}#copBootHandoff img{display:block;width:clamp(175px,48vw,245px);height:auto;filter:drop-shadow(0 15px 28px rgba(0,0,0,.28)) drop-shadow(0 0 22px rgba(74,232,225,.5))}@media(prefers-reduced-motion:reduce){#copBootHandoff{transition:none}}</style>';
+        const handoffStyle='<style id="copBootStyle">body::before,body::after{display:none!important;content:none!important}.top,main,.footer{animation:none!important}#copBootHandoff{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:linear-gradient(145deg,#0b555d,#073d44);opacity:1;transition:opacity .18s ease}#copBootHandoff.cop-boot-out{opacity:0;pointer-events:none}#copBootHandoff img{display:block;width:clamp(175px,48vw,245px);height:auto;filter:drop-shadow(0 15px 28px rgba(0,0,0,.28)) drop-shadow(0 0 22px rgba(74,232,225,.5))}@media(prefers-reduced-motion:reduce){#copBootHandoff{transition:none}}</style>';
         const styleTags=unique(styles).map(src=>'<link rel="stylesheet" href="./'+src+'?fresh='+fresh+'">').join('');
         html=html.replace(/<\/head>/i,handoffStyle+styleTags+'</head>');
 
