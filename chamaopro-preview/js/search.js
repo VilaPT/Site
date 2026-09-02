@@ -1,6 +1,6 @@
 import { supabase as S } from './supabase.js';
 import { escapeHtml, getOrCreateSessionId, normalizeText } from './utils.js';
-import { formatDistance, resolvePortugalLocation } from './location.js?v=11';
+import { formatDistance, resolvePortugalLocation } from './location.js';
 
 const $ = (id) => document.getElementById(id);
 let categories = [];

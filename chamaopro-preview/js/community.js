@@ -1,6 +1,6 @@
 import { supabase as S } from './supabase.js';
 import { getSession } from './auth.js';
-import { deviceAlert } from './alerts.js?v=13';
+import { deviceAlert } from './alerts.js';
 
 const $ = (id) => document.getElementById(id);
 let session = null;

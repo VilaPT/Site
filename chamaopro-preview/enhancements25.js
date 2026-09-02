@@ -1,7 +1,7 @@
 /* Build 25 — hub de mensagens e abertura direta das páginas informativas. */
 import { supabase as S } from './js/supabase.js';
 import { getSession } from './js/auth.js';
-import { openServiceChat } from './js/chat.js?v=11';
+import { openServiceChat } from './js/chat.js';
 
 const $ = (id) => document.getElementById(id);
 let realtimeChannel = null;

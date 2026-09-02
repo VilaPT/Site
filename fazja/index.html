@@ -2,84 +2,19 @@
 <html lang="pt-PT">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b555d">
-  <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
-  <link rel="preload" href="../fazja-preview/logo-chama-o-pro-transparent.png" as="image" type="image/png">
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(145deg,#0b555d,#073d44);color:#fff;min-height:100svh;overflow:hidden}
-    .loader{position:fixed;inset:0;display:grid;place-items:center;padding:24px}
-    .loader-stack{display:grid;place-items:center;text-align:center;animation:loaderAway .68s ease 2.82s forwards}
-    .loader-logo{display:block;width:clamp(175px,48vw,245px);height:auto;opacity:0;transform:scale(.9);animation:logoIn .58s cubic-bezier(.18,.76,.22,1) .08s forwards,logoPulseGlow 1.05s ease-in-out .66s infinite alternate}
-    .loader.error .loader-stack{gap:12px;animation:none}.loader.error .loader-logo{opacity:1;transform:none;animation:none;width:150px}.loader.error{gap:12px}.loader span{color:#dce9e9;font-size:14px}
-    @keyframes logoIn{to{opacity:1;transform:scale(1)}}
-    @keyframes logoPulseGlow{from{filter:drop-shadow(0 10px 20px rgba(0,0,0,.22)) drop-shadow(0 0 8px rgba(74,232,225,.18));transform:scale(1)}to{filter:drop-shadow(0 15px 28px rgba(0,0,0,.28)) drop-shadow(0 0 28px rgba(74,232,225,.72));transform:scale(1.045)}}
-    @keyframes loaderAway{to{opacity:0;filter:blur(1.5px);transform:scale(.985)}}
-    @media(max-width:390px){.loader-logo{width:clamp(165px,46vw,205px)}}
-    @media(prefers-reduced-motion:reduce){.loader-stack,.loader-logo{animation:none!important;opacity:1;transform:none}}
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url=../chamaopro/">
+  <link rel="canonical" href="https://vilapt.github.io/Site/chamaopro/">
+  <title>Chama O Pro</title>
 </head>
 <body>
-  <div class="loader" id="openingLoader" aria-label="A abrir o Chama O Pro">
-    <div class="loader-stack">
-      <img class="loader-logo" src="../fazja-preview/logo-chama-o-pro-transparent.png" alt="Símbolo do Chama O Pro" fetchpriority="high">
-    </div>
-  </div>
+  <p>A abrir o <a href="../chamaopro/">Chama O Pro</a>…</p>
   <script>
-    (async function(){
-      const startedAt = performance.now();
-      const minimumLoadingMs = 3500;
-
-      async function enableFreshAssets(){
-        if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
-        try {
-          const registration = await navigator.serviceWorker.register('./cache-sw.js', { scope:'./', updateViaCache:'none' });
-          registration.update().catch(()=>{});
-          await navigator.serviceWorker.ready;
-          if (!navigator.serviceWorker.controller) {
-            await new Promise((resolve) => {
-              let settled = false;
-              const done = () => { if (settled) return; settled = true; resolve(); };
-              navigator.serviceWorker.addEventListener('controllerchange', done, { once:true });
-              setTimeout(done, 1400);
-            });
-          }
-        } catch (error) {
-          console.warn('Atualização automática de recursos indisponível:', error);
-        }
-      }
-
-      try {
-        await enableFreshAssets();
-        const legacyUrl = new URL(location.href);
-        if (legacyUrl.searchParams.has('v')) {
-          legacyUrl.searchParams.delete('v');
-          history.replaceState(null, '', legacyUrl.pathname + legacyUrl.search + legacyUrl.hash);
-        }
-
-        const fresh = Date.now().toString(36) + Math.random().toString(36).slice(2,8);
-        const appResponse = await fetch('../fazja-preview/index.html?fresh=' + encodeURIComponent(fresh), { cache:'no-store' });
-        if (!appResponse.ok) throw new Error('Falha ao carregar a aplicação');
-        let html = await appResponse.text();
-        html = html.replace('<head>', '<head><base href="../fazja-preview/">');
-        html = html.replace(/\?v=\d+/g, '?fresh=' + fresh);
-        html = html.replace('</head>', '<link rel="stylesheet" href="./community18.css?fresh=' + fresh + '"><link rel="stylesheet" href="./brand20.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux24.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux25.css?fresh=' + fresh + '"><link rel="stylesheet" href="./verification29.css?fresh=' + fresh + '"><link rel="stylesheet" href="./profile30.css?fresh=' + fresh + '"><link rel="stylesheet" href="./chat31.css?fresh=' + fresh + '"><link rel="stylesheet" href="./appointment32.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux33.css?fresh=' + fresh + '"><link rel="stylesheet" href="./ux34.css?fresh=' + fresh + '"><link rel="stylesheet" href="./directchat35.css?fresh=' + fresh + '"><link rel="stylesheet" href="./homepage36.css?fresh=' + fresh + '"><link rel="stylesheet" href="./homepage37.css?fresh=' + fresh + '"><link rel="stylesheet" href="./business37.css?fresh=' + fresh + '"><link rel="stylesheet" href="./social38.css?fresh=' + fresh + '"><link rel="stylesheet" href="./professional-activity.css?fresh=' + fresh + '"><link rel="stylesheet" href="./admin-control.css?fresh=' + fresh + '"><link rel="stylesheet" href="./reports.css?fresh=' + fresh + '"><link rel="stylesheet" href="./owner-console.css?fresh=' + fresh + '"><link rel="stylesheet" href="./owner-district-multi.css?fresh=' + fresh + '"><link rel="stylesheet" href="./auth-viewport.css?fresh=' + fresh + '"><link rel="stylesheet" href="./pro-editor-viewport.css?fresh=' + fresh + '"><style id="copBuild26Transition">body::before,body::after{display:none!important;content:none!important}body{animation:copPlatformReveal 1.45s cubic-bezier(.18,.72,.22,1) both!important}@keyframes copPlatformReveal{0%{opacity:0;filter:blur(2.2px);transform:translateY(9px)}42%{opacity:.58;filter:blur(.9px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}@media(prefers-reduced-motion:reduce){body{animation:none!important}}</style></head>');
-        html = html.replace('</body>', '<script type="module" src="./js/community.js?fresh=' + fresh + '"><\/script><script type="module" src="./enhancements26.js?fresh=' + fresh + '"><\/script><script type="module" src="./navigation25.js?fresh=' + fresh + '"><\/script><script type="module" src="./homepage36.js?fresh=' + fresh + '"><\/script><script type="module" src="./homepage37.js?fresh=' + fresh + '"><\/script><script type="module" src="./business37.js?fresh=' + fresh + '"><\/script><script type="module" src="./social38.js?fresh=' + fresh + '"><\/script><script type="module" src="./professional-activity.js?fresh=' + fresh + '"><\/script><script type="module" src="./reports.js?fresh=' + fresh + '"><\/script><script type="module" src="./admin-control.js?fresh=' + fresh + '"><\/script><script type="module" src="./district-profile.js?fresh=' + fresh + '"><\/script><script type="module" src="./owner-console.js?fresh=' + fresh + '"><\/script><script type="module" src="./owner-district-multi.js?fresh=' + fresh + '"><\/script></body>');
-
-        const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
-        if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
-        document.open(); document.write(html); document.close();
-      } catch (error) {
-        const remaining = Math.max(0, minimumLoadingMs - (performance.now() - startedAt));
-        if (remaining) await new Promise((resolve) => setTimeout(resolve, remaining));
-        document.body.innerHTML = '<div class="loader error"><div class="loader-stack"><img class="loader-logo" src="../fazja-preview/logo-chama-o-pro-transparent.png" alt="Símbolo do Chama O Pro"><strong>Não foi possível abrir o Chama O Pro.</strong><span>Verifica a ligação e tenta novamente.</span></div></div>';
-      }
-    })();
+    const destination = new URL('../chamaopro/', window.location.href);
+    destination.search = window.location.search;
+    destination.hash = window.location.hash;
+    window.location.replace(destination.href);
   </script>
 </body>
 </html>

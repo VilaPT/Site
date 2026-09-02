@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"No tests configured\""
+    "build:chama-o-pro": "node scripts/build-chama-o-pro.mjs",
+    "test": "node --test tests/chama-o-pro.test.mjs",
+    "check:chama-o-pro": "npm run build:chama-o-pro && npm test"
   },
   "keywords": [],
   "author": "",

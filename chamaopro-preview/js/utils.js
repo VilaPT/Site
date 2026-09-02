@@ -17,11 +17,14 @@ export function escapeHtml(value) {
 }
 
 export function getOrCreateSessionId(storage = window.localStorage) {
-  let id = storage.getItem('fazja_sid');
+  const currentKey = 'chamaopro_sid';
+  const legacyKey = 'fazja_sid';
+  let id = storage.getItem(currentKey) || storage.getItem(legacyKey);
   if (!id) {
     id = crypto.randomUUID();
-    storage.setItem('fazja_sid', id);
   }
+  storage.setItem(currentKey, id);
+  storage.removeItem(legacyKey);
   return id;
 }
 

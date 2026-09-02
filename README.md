@@ -1,113 +1,30 @@
-# Web Dev Jrs Portugal
+# VilaPT / Site
 
-Hub de comunidade para aprendizagem de Web Development, com frontend multipágina (fase visual/mock) e backend Node.js + PostgreSQL preparado para autenticação e progressão.
+Repositório com projetos web da VilaPT.
 
-## Estado atual
+## Chama O Pro
 
-- Frontend comunitário multipágina já funcional (sem consumo de API nesta fase).
-- Conteúdo dinâmico mock no cliente (desafios, projetos, recursos, feed e comentários).
-- Alternância de idioma `PT/EN` com persistência em `localStorage`.
-- Menu responsivo, header fixo, popover de autenticação visual.
-- Backend existente com endpoints de auth e learning (desacoplado do frontend comunitário).
+O projeto ativo neste ramo é o **Chama O Pro**, uma plataforma portuguesa para encontrar profissionais adequados e próximos, acompanhar pedidos e gerir o serviço até à avaliação final.
 
-## Páginas públicas
+- aplicação pública: <https://vilapt.github.io/Site/chamaopro/>
+- ramo de publicação: `chamaopro`
+- entrada pública: `chamaopro/`
+- frontend: `chamaopro-preview/`
+- estado técnico e funcional: [`chamaopro/PROJECT_STATE.md`](chamaopro/PROJECT_STATE.md)
+- backend: Supabase
 
-- `/`
-- `/desafios.html`
-- `/projetos.html`
-- `/recursos.html`
-- `/comunidade.html`
-- `/sobre.html`
+Os endereços antigos `/fazja/` e `/fazperto/` existem apenas como encaminhamentos para o endereço canónico `/chamaopro/`.
 
-## Stack
-
-### Frontend
-- HTML5
-- CSS3
-- JavaScript (vanilla)
-
-### Backend
-- Node.js
-- Express
-- PostgreSQL (`pg`)
-- JWT (`jsonwebtoken`)
-- Email (`nodemailer`)
-
-## Estrutura do projeto
-
-```text
-.
-├── assets/
-│   ├── favicon.png
-│   ├── icons/
-│   ├── images/
-│   └── logo/
-├── css/
-│   └── style.css
-├── js/
-│   └── script.js
-├── index.html
-├── desafios.html
-├── projetos.html
-├── recursos.html
-├── comunidade.html
-├── sobre.html
-├── server.js
-├── init.sql
-└── .env.example
-```
-
-## Como correr localmente
-
-1. Instalar dependências:
+### Validar alterações
 
 ```bash
-npm install
+npm run check:chama-o-pro
 ```
 
-2. Configurar ambiente:
+O comando volta a gerar o bundle visual e executa os testes automáticos. O workflow de GitHub Actions repete a validação nas alterações relevantes.
 
-- Copiar `.env.example` para `.env`
-- Preencher variáveis (DB, JWT, SMTP se necessário)
+## Web Dev Jrs Portugal
 
-3. Inicializar base de dados (opcional para fase visual, obrigatório para endpoints de backend):
+Os ficheiros da raiz, como `index.html`, `desafios.html`, `projetos.html`, `recursos.html`, `comunidade.html`, `server.js` e `init.sql`, pertencem ao projeto separado **Web Dev Jrs Portugal**.
 
-```bash
-psql -h localhost -U postgres -d postgres -f init.sql
-```
-
-4. Arrancar servidor:
-
-```bash
-npm run dev
-```
-
-5. Abrir:
-
-- `http://localhost:3000`
-
-## Scripts
-
-- `npm run dev` -> arranca servidor local
-- `npm start` -> arranca servidor local
-- `npm test` -> placeholder (sem testes automatizados nesta fase)
-
-## API disponível (backend atual)
-
-- `GET /health`
-- `POST /auth/register`
-- `GET /auth/verify?token=...`
-- `POST /auth/login`
-- `GET /auth/me`
-- `GET /tracks`
-- `GET /learning/state`
-- `PUT /learning/state`
-- `GET /learning/quiz/config`
-- `POST /learning/quiz/submit`
-
-## Próxima fase (Fase 2)
-
-- Ligar frontend comunitário ao backend real.
-- Ativar login/registo reais com confirmação por email.
-- Persistir posts e comentários em base de dados.
-- Implementar estados de loading/erro/sucesso no frontend.
+As duas aplicações partilham o repositório, mas o Chama O Pro não depende do backend Node/PostgreSQL desse projeto.

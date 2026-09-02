@@ -1,8 +1,8 @@
 import { supabase as S } from './supabase.js';
 import { getSession, requireAuth } from './auth.js';
-import { getSearchContext, resolveSkill } from './search.js?v=11';
-import { openServiceChat } from './chat.js?v=11';
-import { normalizeLocation, resolvePortugalLocation } from './location.js?v=11';
+import { getSearchContext, resolveSkill } from './search.js';
+import { openServiceChat } from './chat.js';
+import { normalizeLocation, resolvePortugalLocation } from './location.js';
 
 const $ = (id) => document.getElementById(id);
 let targetProfessional = null;

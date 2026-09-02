@@ -1,0 +1,38 @@
+name: Chama O Pro checks
+
+on:
+  push:
+    branches: [chamaopro]
+    paths:
+      - 'chamaopro/**'
+      - 'chamaopro-preview/**'
+      - 'fazja/**'
+      - 'fazperto/**'
+      - 'scripts/build-chama-o-pro.mjs'
+      - 'tests/chama-o-pro.test.mjs'
+      - 'package.json'
+      - '.github/workflows/chama-o-pro-checks.yml'
+  pull_request:
+    paths:
+      - 'chamaopro/**'
+      - 'chamaopro-preview/**'
+      - 'fazja/**'
+      - 'fazperto/**'
+      - 'scripts/build-chama-o-pro.mjs'
+      - 'tests/chama-o-pro.test.mjs'
+      - 'package.json'
+      - '.github/workflows/chama-o-pro-checks.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test

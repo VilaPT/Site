@@ -1,29 +1,20 @@
 import { getSession, initAuth } from './js/auth.js';
-import { initSearch } from './js/search.js?v=13';
-import { initRequests, openRequest, requestService } from './js/requests.js?v=28';
+import { initSearch } from './js/search.js';
+import { initRequests, openRequest, requestService } from './js/requests.js';
 import {
   initProfessionals,
   openProfessionalProfile,
-} from './js/professionals.js?v=11';
+} from './js/professionals.js';
 import {
   loadMembership,
   loadPlan,
   membershipState,
 } from './js/memberships.js';
-import { initPortugalPlacesDatalist } from './js/location.js?v=11';
-import { initIdentityVerification } from './js/verification.js?v=15';
+import { initPortugalPlacesDatalist } from './js/location.js';
+import { initIdentityVerification } from './js/verification.js';
 
 const $ = (id) => document.getElementById(id);
 let session = null;
-
-function ensureFeatureStyles() {
-  if (document.querySelector('link[data-cop-features="13"]')) return;
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = './feature13.css?v=13';
-  link.dataset.copFeatures = '13';
-  document.head.appendChild(link);
-}
 
 function toast(message) {
   const element = $('toast');
@@ -162,7 +153,6 @@ async function initIdentityVerificationSafely() {
 }
 
 async function init() {
-  ensureFeatureStyles();
   bindGlobalUi();
   bindLegalUi();
   initRequests();

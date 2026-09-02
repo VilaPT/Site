@@ -1,0 +1,36 @@
+/* Transição curta entre o ecrã de abertura e a plataforma. */
+body::before,
+body::after {
+  display: none !important;
+  content: none !important;
+}
+
+body {
+  animation: copPlatformReveal .58s cubic-bezier(.18, .72, .22, 1) both !important;
+}
+
+.top,
+main,
+.footer {
+  animation: none !important;
+}
+
+@keyframes copPlatformReveal {
+  0% {
+    opacity: 0;
+    filter: blur(1.4px);
+    transform: translateY(6px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none !important;
+  }
+}

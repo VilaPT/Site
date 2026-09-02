@@ -1,0 +1,157 @@
+/* Conteúdo base do Chama O Pro: apresentação, ajuda e pequenos ajustes responsivos. */
+.hero-story {
+  max-width: 760px !important;
+}
+
+.hero-story strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--petrol2);
+  font-size: 1.08em;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 14px 0 18px;
+}
+
+.about-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: #f8faf9;
+}
+
+.about-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--petrol2);
+  font-size: 17px;
+}
+
+.about-card span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.faq-grid {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.faq-grid details {
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #f8faf9;
+}
+
+.faq-grid details[open] {
+  border-color: var(--mid);
+  background: #fff;
+}
+
+.faq-grid summary {
+  position: relative;
+  padding: 15px 28px 15px 0;
+  color: var(--ink);
+  font-weight: 850;
+  list-style: none;
+  cursor: pointer;
+}
+
+.faq-grid summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-grid summary::after {
+  content: '+';
+  position: absolute;
+  top: 12px;
+  right: 2px;
+  color: var(--petrol);
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.faq-grid details[open] summary::after {
+  content: '−';
+}
+
+.faq-grid details p {
+  margin: 0;
+  padding: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .nav-actions .ghost {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-actions .account-btn {
+    display: none !important;
+  }
+
+  .nav-actions .btn {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .nav {
+    gap: 8px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  .brand-name {
+    display: inline;
+    font-size: 16px;
+    letter-spacing: -.5px;
+    white-space: nowrap;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .brand {
+    gap: 7px;
+  }
+
+  .nav-actions .ghost {
+    max-width: 110px;
+    font-size: 10px;
+    line-height: 1.05;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .nav-actions .dark {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  .nav {
+    gap: 5px;
+  }
+}

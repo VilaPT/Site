@@ -1,8 +1,8 @@
 import { supabase as A } from './js/supabase.js';
 import { getSession } from './js/auth.js';
-import { requestProfessionalMode } from './js/professionals.js?v=11';
+import { requestProfessionalMode } from './js/professionals.js';
 import { getMembership, loadMembership, membershipState, trialDaysLeft } from './js/memberships.js';
-import { openServiceChat, initChat } from './js/chat.js?v=11';
+import { openServiceChat, initChat } from './js/chat.js';
 import { escapeHtml } from './js/utils.js';
 import {
   deviceAlert,
@@ -12,12 +12,12 @@ import {
   saveAlertPreferences,
   startAppointmentReminders,
   stopAppointmentReminders,
-} from './js/alerts.js?v=13';
+} from './js/alerts.js';
 import {
   formatAppointment,
   initAppointments,
   openAppointmentScheduler,
-} from './js/appointments.js?v=14';
+} from './js/appointments.js';
 
 const $ = (id) => document.getElementById(id);
 let session = null;

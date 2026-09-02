@@ -8,7 +8,7 @@ import {
   trialDaysLeft,
 } from './memberships.js';
 import { escapeHtml } from './utils.js';
-import { normalizeLocation, resolvePortugalLocation } from './location.js?v=11';
+import { normalizeLocation, resolvePortugalLocation } from './location.js';
 
 const $ = (id) => document.getElementById(id);
 let membershipChanged = () => {};
