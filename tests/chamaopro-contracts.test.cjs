@@ -29,8 +29,18 @@ check('Entrada oficial Chama O Pro existe e usa o logótipo correto', () => {
   mustMatch(source, /\.\.\/fazja-preview\/index\.html/, 'A entrada estável da aplicação deixou de ser carregada.');
 });
 
+check('Shell consolidado substitui apenas as camadas previstas', () => {
+  const source = file('chamaopro/index.html');
+  for (const token of ['shell-early.css', 'shell-late.css']) {
+    if (!source.includes(token)) throw new Error(`Bundle consolidado em falta: ${token}`);
+  }
+  for (const legacy of ['brand20.css', 'ux24.css', 'ux25.css', 'ux33.css', 'ux34.css']) {
+    if (source.includes(`'${legacy}'`)) throw new Error(`O loader continua a carregar ${legacy} diretamente.`);
+  }
+});
+
 check('Splash COP legado permanece neutralizado', () => {
-  const source = file('chamaopro/index.html') + '\n' + file('fazja-preview/brand20.css');
+  const source = file('chamaopro/index.html') + '\n' + file('fazja-preview/shell-early.css');
   mustMatch(source, /body::before\s*,?\s*body::after|body::before[\s\S]{0,100}body::after/, 'Falta proteção contra o splash legado.');
   mustMatch(source, /content\s*:\s*none\s*!important/, 'O pseudo-elemento do splash legado pode voltar a aparecer.');
 });
