@@ -23,6 +23,8 @@ jobs:
           node-version: '20'
       - name: Run Chama O Pro contracts
         run: npm test
+      - name: Audit frontend assets
+        run: npm run audit:frontend
 
   deletion-guard:
     name: No unapproved deletions
