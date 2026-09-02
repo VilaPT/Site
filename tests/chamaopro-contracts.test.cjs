@@ -56,6 +56,20 @@ check('Homepage consolidada preserva o percurso categoria → serviço → local
   mustMatch(styles, /copChoiceReveal/, 'Animação de escolha de serviço desapareceu.');
 });
 
+check('Navegação e mensagens usam um módulo consolidado sem polling duplicado', () => {
+  const entry = file('chamaopro/index.html');
+  const source = file('fazja-preview/navigation-messages.js');
+  if (!entry.includes('navigation-messages.js')) throw new Error('O loader não usa navigation-messages.js.');
+  for (const legacy of ['enhancements26.js', 'navigation25.js']) {
+    if (entry.includes(`'${legacy}'`)) throw new Error(`O loader continua a carregar ${legacy} diretamente.`);
+  }
+  for (const token of ['navRequests', 'navPro', 'navMessages', 'navAccount', 'mark_user_message_thread_read', 'cop:notifications-refresh']) {
+    if (!source.includes(token)) throw new Error(`Contrato de navegação/mensagens em falta: ${token}`);
+  }
+  if (source.includes('notification_counts')) throw new Error('navigation-messages.js voltou a duplicar notification_counts().');
+  if (/setInterval\s*\(/.test(source)) throw new Error('navigation-messages.js voltou a criar polling periódico de notificações.');
+});
+
 check('Splash COP legado permanece neutralizado', () => {
   const source = file('chamaopro/index.html') + '\n' + file('fazja-preview/shell-early.css');
   mustMatch(source, /body::before\s*,?\s*body::after|body::before[\s\S]{0,100}body::after/, 'Falta proteção contra o splash legado.');
@@ -68,12 +82,12 @@ check('URL pública canónica aponta para /chamaopro/', () => {
 });
 
 check('Entrar continua a normalizar para Entrar / Criar conta', () => {
-  const source = file('fazja-preview/navigation25.js');
+  const source = file('fazja-preview/navigation-messages.js');
   mustMatch(source, /Entrar \/ Criar conta/, 'O texto de criação de conta desapareceu da navegação.');
 });
 
 check('Navegação principal preserva Pedidos, Profissional, Mensagens e Conta', () => {
-  const source = file('fazja-preview/navigation25.js');
+  const source = file('fazja-preview/navigation-messages.js');
   for (const token of ['navRequests', 'navPro', 'navMessages', 'navAccount']) {
     if (!source.includes(token)) throw new Error(`Secção de navegação em falta: ${token}`);
   }
