@@ -1,0 +1,73 @@
+name: Chama O Pro Safety
+
+on:
+  push:
+    branches: [chamaopro]
+  pull_request:
+    branches: [chamaopro]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression-contracts:
+    name: Regression contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run Chama O Pro contracts
+        run: npm test
+
+  deletion-guard:
+    name: No unapproved deletions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject unapproved file deletions
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PUSH_BASE: ${{ github.event.before }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD_MESSAGE: ${{ github.event.head_commit.message }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BASE="$PR_BASE"
+            AUTH_TEXT="$PR_TITLE $PR_BODY"
+          else
+            BASE="$PUSH_BASE"
+            AUTH_TEXT="$HEAD_MESSAGE"
+          fi
+
+          if [ -z "${BASE:-}" ] || [[ "$BASE" =~ ^0+$ ]]; then
+            echo "Sem base comparável; proteção de eliminação ignorada neste arranque."
+            exit 0
+          fi
+
+          DELETED="$(git diff --name-only --diff-filter=D "$BASE" "$GITHUB_SHA" || true)"
+          if [ -z "$DELETED" ]; then
+            echo "Nenhum ficheiro eliminado."
+            exit 0
+          fi
+
+          echo "Ficheiros eliminados detectados:"
+          echo "$DELETED"
+          if [[ "$AUTH_TEXT" == *"[ALLOW-DELETE]"* ]]; then
+            echo "Eliminação explicitamente autorizada por [ALLOW-DELETE]."
+            exit 0
+          fi
+
+          echo "::error::O Chama O Pro não permite eliminar ficheiros sem autorização explícita. Usa [ALLOW-DELETE] apenas quando o proprietário pedir a eliminação."
+          exit 1
