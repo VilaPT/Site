@@ -111,7 +111,7 @@ async function submitAuth(event) {
           data: {
             display_name: name,
             account_type: accountType,
-            beta_terms_version: '2026-08-27',
+            beta_terms_version: '2026-09-02',
           },
         },
       });
