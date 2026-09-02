@@ -1,0 +1,253 @@
+/* Chama O Pro — shell early consolidado.
+   Preserva, pela mesma ordem, brand20.css + ux24.css + ux25.css.
+   Os ficheiros de origem permanecem intactos para rollback. */
+
+/* ===== brand20.css ===== */
+/* Identidade visual Chama O Pro */
+.top{
+  background:rgba(222,226,227,.90)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(120%)!important;
+  backdrop-filter:blur(18px) saturate(120%)!important;
+  border-bottom:1px solid rgba(82,98,101,.20)!important;
+  box-shadow:0 8px 24px rgba(7,61,68,.06)!important;
+}
+.brand-mark{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  border-radius:0!important;
+  background:transparent url('./logo-chama-o-pro-transparent.png') center/contain no-repeat!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+
+/* Desativa definitivamente o splash legado do CSS base. O único arranque visível
+   passa a ser o loading oficial em /chamaopro/. */
+body::before,
+body::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.top,
+main,
+.footer{
+  animation:none!important;
+}
+
+@media(max-width:430px){
+  .brand-mark{width:40px!important;height:40px!important;min-width:40px!important;border-radius:0!important}
+}
+
+/* ===== ux24.css ===== */
+/* Build 24 — navegação por páginas, feedback táctil e cabeçalho simplificado. */
+:root{--cop-nav-active:#08717a;--cop-nav-line:#10b9b4}
+
+/* A área profissional e a conta vivem na navegação principal. No topo fica apenas a sessão. */
+.nav-actions #proCta,
+.nav-actions #accountCta{display:none!important}
+
+/* Logótipo um pouco maior, mantendo o PNG transparente e acrescentando um contorno preto muito fino. */
+.brand-mark{
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  flex:0 0 52px!important;
+  border-radius:0!important;
+  filter:drop-shadow(.45px 0 0 rgba(0,0,0,.86)) drop-shadow(-.45px 0 0 rgba(0,0,0,.86)) drop-shadow(0 .45px 0 rgba(0,0,0,.86)) drop-shadow(0 -.45px 0 rgba(0,0,0,.86))!important;
+}
+
+#authBtn{white-space:nowrap;transition:transform .16s ease,opacity .16s ease,box-shadow .16s ease,background-color .16s ease}
+
+/* Interação limpa, sem o flash visual de toque do navegador/telemóvel. */
+button,
+.btn,
+.category-card,
+.service-chip,
+.request-action,
+.chat-action{
+  -webkit-tap-highlight-color:transparent!important;
+  touch-action:manipulation;
+  transition:transform .16s ease,opacity .16s ease,box-shadow .16s ease,background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+button:active:not(:disabled),
+.btn:active:not(:disabled),
+.category-card:active,
+.service-chip:active,
+.request-action:active:not(:disabled),
+.chat-action:active:not(:disabled){transform:scale(.975);opacity:.72}
+button:focus-visible,
+.btn:focus-visible,
+.category-card:focus-visible,
+.service-chip:focus-visible{outline:3px solid rgba(16,185,180,.28);outline-offset:2px}
+
+/* A secção ativa acompanha a página atual. */
+.mobile-nav button{position:relative!important;-webkit-tap-highlight-color:transparent!important}
+.mobile-nav #navHome{color:#4e5e62!important}
+.mobile-nav #navHome::after{content:none!important;display:none!important}
+.mobile-nav button.active,
+.mobile-nav button.is-current{color:var(--cop-nav-active)!important;background:transparent!important}
+.mobile-nav button.active::after,
+.mobile-nav button.is-current::after{
+  content:""!important;display:block!important;position:absolute!important;
+  left:18%!important;right:18%!important;bottom:1px!important;height:3px!important;
+  border-radius:999px!important;background:var(--cop-nav-line)!important;
+}
+.mobile-nav button:active{background:transparent!important;opacity:.62!important}
+
+/* Em ecrãs maiores a navegação continua acessível e separada do botão de sessão. */
+@media(min-width:721px){
+  .top{padding-bottom:10px!important}
+  .mobile-nav{
+    display:grid!important;width:min(590px,calc(100% - 32px))!important;margin:0 auto 8px!important;
+    grid-template-columns:repeat(4,1fr)!important;gap:4px!important;padding:6px!important;
+    background:rgba(255,255,255,.72)!important;border:1px solid rgba(82,98,101,.16)!important;
+    border-radius:21px!important;box-shadow:0 9px 26px rgba(4,63,71,.06)!important;
+    backdrop-filter:blur(12px)!important;
+  }
+  .mobile-nav button{
+    min-height:49px!important;padding:6px 10px 8px!important;border:0!important;border-radius:14px!important;
+    background:transparent!important;color:#536164!important;display:flex!important;align-items:center!important;
+    justify-content:center!important;gap:7px!important;font-size:12px!important;font-weight:850!important;
+  }
+  .mobile-nav .nav-icon{width:23px!important;height:23px!important;display:grid!important;place-items:center!important}
+  .mobile-nav .nav-icon svg{width:22px!important;height:22px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+}
+
+/* Pedidos / Profissional / Conta tornam-se vistas de página, em vez de caixas modais sobre a homepage. */
+body.cop-section-page main,
+body.cop-section-page > .footer{display:none!important}
+body.cop-section-page #accountModal.open{
+  position:relative!important;inset:auto!important;z-index:1!important;display:block!important;
+  min-height:calc(100vh - 120px)!important;padding:0!important;background:#f7faf9!important;backdrop-filter:none!important;
+}
+body.cop-section-page #accountModal>.box.wide{
+  width:min(980px,calc(100% - 32px))!important;max-width:none!important;max-height:none!important;
+  min-height:calc(100vh - 150px)!important;margin:0 auto!important;padding:34px 0 64px!important;
+  overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+}
+body.cop-section-page #accountClose,
+body.cop-section-page #accountModal .account-tabs{display:none!important}
+body.cop-section-page #accountModal>.box>h2{
+  margin:0 0 22px!important;color:#0d1214!important;font-size:clamp(30px,5vw,46px)!important;
+  line-height:1!important;letter-spacing:-1.7px!important;
+}
+body.cop-section-page .account-panel.on{animation:copSectionIn .24s ease both}
+@keyframes copSectionIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+@media(max-width:720px){
+  .brand-mark{width:46px!important;height:46px!important;min-width:46px!important;flex-basis:46px!important;border-radius:0!important}
+  .nav-actions{flex:0 0 auto!important}
+  #authBtn{max-width:142px!important;min-height:40px!important;padding:8px 12px!important;font-size:11px!important;line-height:1.05!important;text-align:center!important;white-space:normal!important}
+  body.cop-section-page #accountModal>.box.wide{width:calc(100% - 24px)!important;min-height:calc(100vh - 160px)!important;padding:28px 0 52px!important}
+  body.cop-section-page #accountModal>.box>h2{font-size:34px!important;margin-bottom:18px!important}
+}
+@media(max-width:390px){
+  .brand-mark{width:44px!important;height:44px!important;min-width:44px!important;flex-basis:44px!important}
+  #authBtn{max-width:126px!important;padding:7px 9px!important;font-size:10px!important}
+}
+
+/* ===== ux25.css ===== */
+/* Build 25 — informação de proximidade, cinco áreas de navegação e páginas informativas. */
+:root{--cop-message:#08717a;--cop-message-soft:#eaf7f6}
+
+/* “Serviços perto de ti” é informação, não um botão. */
+.eyebrow{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:9px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#075963!important;
+  font-size:15px!important;
+  font-weight:900!important;
+  letter-spacing:.01em!important;
+}
+.eyebrow::before{
+  content:""!important;
+  display:block!important;
+  width:21px!important;
+  height:21px!important;
+  flex:0 0 21px!important;
+  background:currentColor!important;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z'/%3E%3C/svg%3E") center/contain no-repeat!important;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z'/%3E%3C/svg%3E") center/contain no-repeat!important;
+}
+.eyebrow::after{content:none!important;display:none!important}
+
+/* A navegação passa a ter cinco destinos: Início, Pedidos, Profissional, Mensagens e Conta. */
+.mobile-nav{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+#navMessages{position:relative!important}
+#navMessages .nav-icon svg{fill:none!important;stroke:currentColor!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+#navAccount .community-message-badge{display:none!important}
+.mobile-nav #navMessages .notification-badge{top:0!important;right:9px!important}
+
+/* Inbox agregado: mensagens de serviços + conversas entre utilizadores. */
+.cop-message-groups{display:grid;gap:28px}
+.cop-message-group{display:grid;gap:10px}
+.cop-message-group-title{display:flex;align-items:end;justify-content:space-between;gap:12px}
+.cop-message-group-title h3{margin:0;color:#132226;font-size:20px;letter-spacing:-.35px}
+.cop-message-group-title span{color:var(--muted);font-size:12px}
+.cop-service-inbox{display:grid;gap:10px}
+.cop-service-message{
+  width:100%;border:1px solid var(--line);border-radius:19px;background:#fff;padding:14px 15px;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 12px;text-align:left;color:inherit;cursor:pointer;
+  box-shadow:0 7px 22px rgba(7,61,68,.035);
+}
+.cop-service-message:hover{border-color:var(--mid);box-shadow:0 11px 28px rgba(7,61,68,.07)}
+.cop-service-message.unread{border-color:#8ad6d1;box-shadow:0 0 0 2px rgba(16,185,180,.09)}
+.cop-service-message .who{font-weight:900;color:var(--petrol2);font-size:14px}
+.cop-service-message .when{color:var(--muted);font-size:11px;white-space:nowrap}
+.cop-service-message .subject{grid-column:1/-1;font-weight:800;font-size:13px;color:#283537}
+.cop-service-message .preview{grid-column:1/-1;color:var(--muted);font-size:13px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cop-service-message .new-message{display:inline-flex;width:max-content;margin-top:1px;padding:4px 8px;border-radius:999px;background:var(--cop-message-soft);color:var(--cop-message);font-size:10px;font-weight:900}
+.cop-message-empty{border:1px dashed var(--mid);background:#f9fbfa;border-radius:18px;padding:18px;color:var(--muted);line-height:1.5}
+#communityMessagesTab{position:relative}
+
+/* Sobre / FAQs / Privacidade / Termos abrem diretamente como página de informação. */
+body.cop-info-page main,
+body.cop-info-page > .footer{display:none!important}
+body.cop-info-page #legalModal.open{
+  position:relative!important;inset:auto!important;z-index:1!important;display:block!important;
+  min-height:calc(100vh - 118px)!important;padding:0!important;background:#f7faf9!important;backdrop-filter:none!important;
+}
+body.cop-info-page #legalModal>.box.wide{
+  width:min(900px,calc(100% - 32px))!important;max-width:none!important;max-height:none!important;
+  min-height:calc(100vh - 150px)!important;margin:0 auto!important;padding:38px 0 64px!important;
+  overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+}
+body.cop-info-page #legalModal>.box>h2{margin:0 56px 24px 0!important;color:#0d1214!important;font-size:clamp(30px,5vw,44px)!important;letter-spacing:-1.4px!important}
+body.cop-info-page #legalModal .legal-body{font-size:15px!important;line-height:1.72!important;color:#46575a!important}
+body.cop-info-page #legalModal .x{position:fixed!important;right:max(18px,calc((100vw - 900px)/2))!important;top:132px!important;z-index:4!important}
+
+@media(min-width:721px){
+  .mobile-nav{width:min(720px,calc(100% - 32px))!important}
+  .mobile-nav button{min-width:0!important;padding-left:8px!important;padding-right:8px!important}
+}
+@media(max-width:720px){
+  .eyebrow{font-size:14.5px!important;gap:8px!important}
+  .eyebrow::before{width:20px!important;height:20px!important;flex-basis:20px!important}
+  .mobile-nav{gap:1px!important;padding-left:5px!important;padding-right:5px!important}
+  .mobile-nav button{min-width:0!important;padding-left:2px!important;padding-right:2px!important;font-size:9.5px!important}
+  .mobile-nav .nav-icon{width:24px!important;height:24px!important}
+  .mobile-nav .nav-icon svg{width:22px!important;height:22px!important}
+  .mobile-nav #navMessages .notification-badge{right:5px!important}
+  .cop-service-message{grid-template-columns:minmax(0,1fr);gap:5px;padding:13px}
+  .cop-service-message .when{grid-row:auto;white-space:normal}
+  .cop-message-group-title{align-items:start;flex-direction:column;gap:2px}
+  body.cop-info-page #legalModal>.box.wide{width:calc(100% - 24px)!important;padding:30px 0 52px!important}
+  body.cop-info-page #legalModal .x{right:14px!important;top:145px!important}
+}
+@media(max-width:390px){
+  .mobile-nav button{font-size:9px!important}
+  .mobile-nav .nav-icon{width:22px!important;height:22px!important}
+  .mobile-nav .nav-icon svg{width:20px!important;height:20px!important}
+}
