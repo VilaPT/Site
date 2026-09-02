@@ -18,20 +18,6 @@
   box-shadow:none!important;
   overflow:hidden!important;
 }
-body::after{
-  content:""!important;
-  width:clamp(150px,34vw,220px)!important;
-  height:clamp(150px,34vw,220px)!important;
-  left:50%!important;
-  top:50%!important;
-  transform:translate(-50%,-50%)!important;
-  border-radius:0!important;
-  background:transparent url('./logo-chama-o-pro-transparent.png') center/contain no-repeat!important;
-  color:transparent!important;
-  font-size:0!important;
-  box-shadow:none!important;
-  text-shadow:none!important;
-}
 @media(max-width:430px){
   .brand-mark{width:40px!important;height:40px!important;min-width:40px!important;border-radius:0!important}
 }
