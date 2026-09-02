@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"No tests configured\""
+    "test": "node tests/chamaopro-contracts.test.cjs"
   },
   "keywords": [],
   "author": "",
