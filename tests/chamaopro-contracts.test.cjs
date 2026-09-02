@@ -39,6 +39,23 @@ check('Shell consolidado substitui apenas as camadas previstas', () => {
   }
 });
 
+check('Homepage consolidada preserva o percurso categoria → serviço → localização', () => {
+  const entry = file('chamaopro/index.html');
+  const source = file('fazja-preview/homepage-flow.js');
+  const styles = file('fazja-preview/homepage-flow.css');
+  for (const token of ['homepage-flow.js', 'homepage-flow.css']) {
+    if (!entry.includes(token)) throw new Error(`Homepage consolidada em falta no loader: ${token}`);
+  }
+  for (const legacy of ['homepage36.js', 'homepage37.js', 'homepage36.css', 'homepage37.css']) {
+    if (entry.includes(`'${legacy}'`)) throw new Error(`O loader continua a carregar ${legacy} diretamente.`);
+  }
+  for (const token of ['prepareHomepageFlow', 'prepareChoiceFlow', 'decorateLocalServicesCategory', 'guideSelectedService', 'centerSelectedCategory']) {
+    if (!source.includes(token)) throw new Error(`Comportamento da homepage em falta: ${token}`);
+  }
+  mustMatch(styles, /copSearchGuide/, 'Animação de orientação para a localização desapareceu.');
+  mustMatch(styles, /copChoiceReveal/, 'Animação de escolha de serviço desapareceu.');
+});
+
 check('Splash COP legado permanece neutralizado', () => {
   const source = file('chamaopro/index.html') + '\n' + file('fazja-preview/shell-early.css');
   mustMatch(source, /body::before\s*,?\s*body::after|body::before[\s\S]{0,100}body::after/, 'Falta proteção contra o splash legado.');
