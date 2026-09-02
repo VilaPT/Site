@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node tests/chamaopro-contracts.test.cjs"
+    "test": "node tests/chamaopro-contracts.test.cjs",
+    "audit:frontend": "node tests/chamaopro-frontend-audit.cjs"
   },
   "keywords": [],
   "author": "",
