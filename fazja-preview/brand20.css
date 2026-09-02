@@ -18,6 +18,23 @@
   box-shadow:none!important;
   overflow:hidden!important;
 }
+
+/* Desativa definitivamente o splash legado do CSS base. O único arranque visível
+   passa a ser o loading oficial em /chamaopro/. */
+body::before,
+body::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.top,
+main,
+.footer{
+  animation:none!important;
+}
+
 @media(max-width:430px){
   .brand-mark{width:40px!important;height:40px!important;min-width:40px!important;border-radius:0!important}
 }
