@@ -17,7 +17,7 @@
   <script>
     (async function(){
       const startedAt=performance.now();
-      const minimumLoadingMs=1200;
+      const minimumLoadingMs=650;
       const appEntry='../fazja-preview/index.html';
       const styles=[
         'community18.css','brand20.css','ux24.css','ux25.css','verification29.css','profile30.css','chat31.css','appointment32.css','ux33.css','ux34.css','directchat35.css','homepage36.css','homepage37.css','business37.css','social38.css','professional-activity.css','admin-control.css','reports.css','owner-console.css','owner-district-multi.css','auth-viewport.css','pro-editor-viewport.css'
@@ -53,10 +53,18 @@
         let html=await fetchApp(appEntry+'?fresh='+encodeURIComponent(fresh));
         html=html.replace(/<head([^>]*)>/i,'<head$1><base href="../fazja-preview/">');
         html=html.replace(/\?v=\d+/g,'?fresh='+fresh);
+
+        const handoffStyle='<style id="copBootStyle">#copBootHandoff{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:linear-gradient(145deg,#0b555d,#073d44);opacity:1;transition:opacity .18s ease}#copBootHandoff.cop-boot-out{opacity:0;pointer-events:none}#copBootHandoff img{display:block;width:clamp(175px,48vw,245px);height:auto;filter:drop-shadow(0 15px 28px rgba(0,0,0,.28)) drop-shadow(0 0 22px rgba(74,232,225,.5))}@media(prefers-reduced-motion:reduce){#copBootHandoff{transition:none}}</style>';
         const styleTags=unique(styles).map(src=>'<link rel="stylesheet" href="./'+src+'?fresh='+fresh+'">').join('');
-        html=html.replace(/<\/head>/i,styleTags+'</head>');
+        html=html.replace(/<\/head>/i,handoffStyle+styleTags+'</head>');
+
+        const handoff='<div id="copBootHandoff" aria-label="A abrir o Chama O Pro"><img src="./logo-chama-o-pro-transparent.png" alt="Símbolo do Chama O Pro"></div>';
+        html=html.replace(/<body([^>]*)>/i,'<body$1>'+handoff);
+
         const scriptTags=unique(scripts).map(src=>'<scr'+'ipt type="module" src="./'+src+'?fresh='+fresh+'"></scr'+'ipt>').join('');
-        html=html.replace(/<\/body>/i,scriptTags+'</body>');
+        const handoffScript='<scr'+'ipt>(function(){var removed=false;function finish(){if(removed)return;removed=true;var el=document.getElementById("copBootHandoff");if(!el)return;el.classList.add("cop-boot-out");setTimeout(function(){el.remove();var css=document.getElementById("copBootStyle");if(css)css.remove();},220)}window.addEventListener("load",function(){requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(finish,80)})})},{once:true});setTimeout(finish,12000)})();</scr'+'ipt>';
+        html=html.replace(/<\/body>/i,scriptTags+handoffScript+'</body>');
+
         const remaining=Math.max(0,minimumLoadingMs-(performance.now()-startedAt));
         if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
         document.open();document.write(html);document.close();
