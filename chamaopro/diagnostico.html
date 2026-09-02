@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chama O Pro | Diagnóstico</title>
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f7f7;color:#163236}.wrap{max-width:760px;margin:0 auto;padding:28px 18px}.card{background:#fff;border:1px solid #d8e3e3;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(8,55,61,.06)}h1{margin:0 0 8px;color:#0b555d;font-size:26px}p{color:#5d7274}.row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid #edf2f2}.row:first-child{border-top:0}.ok{color:#137333;font-weight:750}.fail{color:#b3261e;font-weight:750}.pending{color:#6b7778}.summary{margin-top:16px;font-weight:800}.actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}button,a{border:0;border-radius:12px;padding:10px 14px;font:inherit;font-weight:750;text-decoration:none;cursor:pointer}.primary{background:#0b555d;color:#fff}.ghost{background:#e9f1f1;color:#0b555d}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Diagnóstico do Chama O Pro</h1>
+    <p>Verificação rápida dos ficheiros essenciais publicados. Esta página não altera dados nem inicia sessão.</p>
+    <section class="card">
+      <div id="checks"></div>
+      <div class="summary" id="summary">A verificar…</div>
+      <div class="actions"><button class="primary" id="run" type="button">Verificar novamente</button><a class="ghost" href="./">Abrir Chama O Pro</a></div>
+    </section>
+  </main>
+  <script>
+    const files=[
+      ['Aplicação','../fazja-preview/index.html'],
+      ['Módulo principal','../fazja-preview/app.js'],
+      ['Área de conta','../fazja-preview/account.js'],
+      ['Configuração','../fazja-preview/js/config.js'],
+      ['Ligação Supabase','../fazja-preview/js/supabase.js'],
+      ['Service worker','./sw.js']
+    ];
+    const checks=document.getElementById('checks');
+    const summary=document.getElementById('summary');
+
+    async function run(){
+      checks.innerHTML=files.map(([name])=>`<div class="row"><span>${name}</span><span class="pending">A verificar…</span></div>`).join('');
+      summary.textContent='A verificar…';
+      const rows=[...checks.querySelectorAll('.row')];
+      let passed=0;
+      await Promise.all(files.map(async([,url],index)=>{
+        const state=rows[index].lastElementChild;
+        try{
+          const response=await fetch(url+'?health='+Date.now(),{cache:'no-store'});
+          if(!response.ok)throw new Error(String(response.status));
+          state.textContent='OK';
+          state.className='ok';
+          passed+=1;
+        }catch(error){
+          state.textContent='Falhou';
+          state.className='fail';
+        }
+      }));
+      summary.textContent=passed===files.length?'Tudo operacional.':`${passed}/${files.length} verificações passaram.`;
+    }
+
+    document.getElementById('run').addEventListener('click',run);
+    run();
+  </script>
+</body>
+</html>
