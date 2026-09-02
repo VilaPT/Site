@@ -1,15 +1,16 @@
-/* Build 37 — deslocações, espaço físico público e ligação Waze.
-   Mantém a morada privada da conta separada da morada comercial publicada. */
+/* Build 39 — modos de atendimento e espaço físico.
+   A gravação é feita atomicamente pelo backend em save_professional_profile_v3(). */
 import { supabase as S } from './js/supabase.js';
 import { getSession } from './js/auth.js';
-import { resolvePortugalLocation } from './js/location.js?v=11';
 
 const $ = (id) => document.getElementById(id);
-let loadedProfileUpdatedAt = null;
 let businessLoadToken = 0;
 let cardDecorateTimer = null;
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
+  '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;',
+}[c]));
+const escapeAttr = escapeHtml;
 
 async function currentSession() {
   let session = getSession();
@@ -51,11 +52,8 @@ function injectBusinessFields() {
 function updateModeUi() {
   const mobile = Boolean($('copOffersMobile')?.checked);
   const shop = Boolean($('copHasShop')?.checked);
-  const shopFields = $('copShopFields');
-  shopFields?.classList.toggle('hidden', !shop);
-
-  const radiusField = $('pradius')?.closest('.field');
-  radiusField?.classList.toggle('cop-mode-disabled', !mobile);
+  $('copShopFields')?.classList.toggle('hidden', !shop);
+  $('pradius')?.closest('.field')?.classList.toggle('cop-mode-disabled', !mobile);
 
   for (const id of ['copShopAddress','copShopCity']) {
     const input = $(id);
@@ -71,7 +69,7 @@ async function loadBusinessForm() {
   const token = ++businessLoadToken;
   const [profileResult, shopResult] = await Promise.all([
     S.from('professional_profiles')
-      .select('offers_mobile_service,has_public_shop,business_name,updated_at')
+      .select('offers_mobile_service,has_public_shop,business_name')
       .eq('user_id', session.user.id)
       .maybeSingle(),
     S.from('professional_shop_locations')
@@ -80,10 +78,13 @@ async function loadBusinessForm() {
       .maybeSingle(),
   ]);
   if (token !== businessLoadToken) return;
+  if (profileResult.error || shopResult.error) {
+    console.error('Falha ao carregar modos de atendimento:', profileResult.error || shopResult.error);
+    return;
+  }
 
   const profile = profileResult.data || {};
   const shop = shopResult.data || {};
-  loadedProfileUpdatedAt = profile.updated_at || null;
   $('copOffersMobile').checked = profile.offers_mobile_service !== false;
   $('copHasShop').checked = Boolean(profile.has_public_shop);
   $('copBusinessName').value = profile.business_name || '';
@@ -92,113 +93,6 @@ async function loadBusinessForm() {
   $('copShopCity').value = shop.city || shop.location_label || '';
   $('copBusinessStatus').textContent = '';
   updateModeUi();
-}
-
-function captureBusinessSnapshot(event) {
-  injectBusinessFields();
-  const mobile = Boolean($('copOffersMobile')?.checked);
-  const hasShop = Boolean($('copHasShop')?.checked);
-  const address = $('copShopAddress')?.value.trim() || '';
-  const city = $('copShopCity')?.value.trim() || '';
-
-  if (!mobile && !hasShop) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if ($('proMsg')) $('proMsg').textContent = 'Escolhe pelo menos uma forma de atendimento: deslocações ou espaço físico.';
-    return;
-  }
-  if (hasShop && (!address || !city)) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if ($('proMsg')) $('proMsg').textContent = 'Para publicar um espaço físico, indica a morada e a localidade.';
-    return;
-  }
-
-  const snapshot = {
-    mobile,
-    hasShop,
-    businessName: $('copBusinessName')?.value.trim() || '',
-    address,
-    postalCode: $('copShopPostal')?.value.trim() || '',
-    city,
-    previousUpdatedAt: loadedProfileUpdatedAt,
-  };
-  persistAfterBaseProfile(snapshot).catch(console.error);
-}
-
-async function waitForBaseProfile(uid, previousUpdatedAt) {
-  for (let attempt = 0; attempt < 20; attempt += 1) {
-    await delay(attempt === 0 ? 500 : 250);
-    const { data, error } = await S.from('professional_profiles')
-      .select('user_id,updated_at')
-      .eq('user_id', uid)
-      .maybeSingle();
-    if (error) return null;
-    if (data && (!previousUpdatedAt || data.updated_at !== previousUpdatedAt)) return data;
-  }
-  return null;
-}
-
-async function persistAfterBaseProfile(snapshot) {
-  const session = await currentSession();
-  if (!session) return;
-  const status = $('copBusinessStatus');
-  if (status) status.textContent = 'A guardar forma de atendimento…';
-
-  const baseProfile = await waitForBaseProfile(session.user.id, snapshot.previousUpdatedAt);
-  if (!baseProfile) {
-    if (status) status.textContent = 'A forma de atendimento não foi alterada porque o perfil principal não ficou guardado.';
-    return;
-  }
-
-  const profileUpdate = await S.from('professional_profiles').update({
-    offers_mobile_service: snapshot.mobile,
-    has_public_shop: snapshot.hasShop,
-    business_name: snapshot.hasShop && snapshot.businessName ? snapshot.businessName : null,
-  }).eq('user_id', session.user.id);
-
-  if (profileUpdate.error) {
-    if (status) status.textContent = 'Não foi possível guardar a forma de atendimento.';
-    return;
-  }
-
-  if (snapshot.hasShop) {
-    let resolved = null;
-    const locationText = [snapshot.postalCode, snapshot.city].filter(Boolean).join(' ');
-    if (locationText) resolved = await resolvePortugalLocation(locationText);
-
-    const shopResult = await S.from('professional_shop_locations').upsert({
-      professional_id: session.user.id,
-      address_line1: snapshot.address,
-      postal_code: snapshot.postalCode || null,
-      city: snapshot.city,
-      location_label: resolved?.label || snapshot.city,
-      location_lat: resolved?.lat ?? null,
-      location_lon: resolved?.lon ?? null,
-      is_public: true,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'professional_id' });
-
-    if (shopResult.error) {
-      if (status) status.textContent = 'O perfil ficou guardado, mas não foi possível guardar a morada pública.';
-      return;
-    }
-  } else {
-    const deleteResult = await S.from('professional_shop_locations')
-      .delete()
-      .eq('professional_id', session.user.id);
-    if (deleteResult.error) {
-      if (status) status.textContent = 'O perfil ficou guardado, mas não foi possível retirar a morada pública.';
-      return;
-    }
-  }
-
-  loadedProfileUpdatedAt = baseProfile.updated_at;
-  if (status) status.textContent = snapshot.hasShop && snapshot.mobile
-    ? 'Deslocações e espaço físico guardados ✓'
-    : snapshot.hasShop
-      ? 'Espaço físico guardado ✓'
-      : 'Deslocações guardadas ✓';
 }
 
 function ensurePublicBusinessInfo() {
@@ -223,7 +117,7 @@ async function loadPublicBusinessInfo(professionalId) {
   const box = ensurePublicBusinessInfo();
   if (!box || !professionalId) return;
   box.classList.add('hidden');
-  box.innerHTML = '';
+  box.replaceChildren();
 
   const { data: profile, error } = await S.from('professional_profiles')
     .select('offers_mobile_service,has_public_shop,business_name,service_radius_km')
@@ -237,16 +131,22 @@ async function loadPublicBusinessInfo(professionalId) {
       .select('address_line1,postal_code,city')
       .eq('professional_id', professionalId)
       .maybeSingle();
+    if (result.error) return;
     shop = result.data || null;
   }
 
   const parts = [];
   if (profile.offers_mobile_service) {
-    parts.push(`<div class="cop-business-mode"><span class="cop-mode-icon">🚗</span><div><strong>Desloca-se até ao cliente</strong><span>Até ${Number(profile.service_radius_km || 15)} km da zona base.</span></div></div>`);
+    const radiusRaw = Number(profile.service_radius_km || 15);
+    const radius = Number.isFinite(radiusRaw) ? Math.max(1, Math.min(200, radiusRaw)) : 15;
+    parts.push(`<div class="cop-business-mode"><span class="cop-mode-icon">🚗</span><div><strong>Desloca-se até ao cliente</strong><span>Até ${radius} km da zona base.</span></div></div>`);
   }
   if (profile.has_public_shop && shop) {
+    const businessName = escapeHtml(profile.business_name || 'Espaço físico aberto ao público');
+    const publicAddress = [shop.address_line1, shop.postal_code, shop.city].filter(Boolean).join(', ');
     const destination = [shop.address_line1, shop.postal_code, shop.city, 'Portugal'].filter(Boolean).join(', ');
-    parts.push(`<div class="cop-business-mode"><span class="cop-mode-icon">🏪</span><div><strong>${profile.business_name || 'Espaço físico aberto ao público'}</strong><span>${[shop.address_line1, shop.postal_code, shop.city].filter(Boolean).join(', ')}</span><a class="cop-waze-link" href="${wazeUrl(destination)}" target="_blank" rel="noopener noreferrer">Abrir no Waze</a></div></div>`);
+    const href = escapeAttr(wazeUrl(destination));
+    parts.push(`<div class="cop-business-mode"><span class="cop-mode-icon">🏪</span><div><strong>${businessName}</strong><span>${escapeHtml(publicAddress)}</span><a class="cop-waze-link" href="${href}" target="_blank" rel="noopener noreferrer">Abrir no Waze</a></div></div>`);
   }
 
   if (parts.length) {
@@ -285,7 +185,6 @@ function scheduleCardDecoration() {
 }
 
 injectBusinessFields();
-$('proForm')?.addEventListener('submit', captureBusinessSnapshot, true);
 
 const proModal = $('proModal');
 if (proModal) {
