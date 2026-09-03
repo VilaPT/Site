@@ -6,6 +6,20 @@
     'https://unpkg.com/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js'
   ];
   const SCRIPT_TIMEOUT_MS=3000;
+  let revealScheduled=false;
+
+  function revealOnTime(){
+    if(revealScheduled)return;
+    revealScheduled=true;
+    const started=window.__copBootStart||performance.now();
+    const remaining=Math.max(0,850-(performance.now()-started));
+    setTimeout(()=>document.body.classList.add('cop-ready'),remaining);
+  }
+
+  /* O loading visual é independente da rede e dos módulos.
+     A página pública mostra o logótipo 3650 ms e esta página completa
+     os 850 ms restantes. Assim nunca fica presa à espera do Supabase. */
+  revealOnTime();
 
   function hasSupabase(){
     return Boolean(window.supabase && typeof window.supabase.createClient==='function');
@@ -66,20 +80,13 @@
     await import('./owner-district-multi.js?v=15');
   }
 
-  function reveal(){
-    const started=window.__copBootStart||performance.now();
-    const remaining=Math.max(0,850-(performance.now()-started));
-    setTimeout(()=>document.body.classList.add('cop-ready'),remaining);
-  }
-
   function showRecovery(error){
     console.error('[Chama O Pro] Falha no arranque',error);
-    reveal();
     const box=document.createElement('div');
     box.id='copStartupRecovery';
     box.setAttribute('role','alert');
     box.style.cssText='position:fixed;left:50%;bottom:18px;z-index:2147483647;transform:translateX(-50%);width:min(520px,calc(100% - 28px));background:#142124;color:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 18px 50px rgba(0,0,0,.28);font:600 14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-    box.innerHTML='<strong style="display:block;margin-bottom:4px">A ligação não arrancou corretamente.</strong><span style="display:block;opacity:.86;margin-bottom:10px">Podes tentar novamente. A página não ficará presa no loading.</span><button type="button" style="border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;cursor:pointer">Tentar novamente</button>';
+    box.innerHTML='<strong style="display:block;margin-bottom:4px">A ligação não arrancou corretamente.</strong><span style="display:block;opacity:.86;margin-bottom:10px">A página abriu, mas alguns dados podem não estar disponíveis. Podes tentar novamente.</span><button type="button" style="border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;cursor:pointer">Tentar novamente</button>';
     const button=box.querySelector('button');
     if(button)button.addEventListener('click',()=>window.location.reload());
     document.body.appendChild(box);
@@ -89,7 +96,6 @@
     try{
       await ensureSupabase();
       await startModules();
-      reveal();
     }catch(error){
       showRecovery(error);
     }
