@@ -5,7 +5,7 @@
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js',
     'https://unpkg.com/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js'
   ];
-  const SCRIPT_TIMEOUT_MS=4500;
+  const SCRIPT_TIMEOUT_MS=3000;
   const modules=[
     './app.js?v=15',
     './account.js?v=15',
@@ -46,7 +46,6 @@
       }
       script.src=src;
       script.async=true;
-      script.crossOrigin='anonymous';
       script.onload=()=>finish(null);
       script.onerror=()=>finish(new Error('Falha ao carregar '+src));
       document.head.appendChild(script);
