@@ -94,35 +94,6 @@
 
 <datalist id="portugalPlaces"></datalist>
 <div class="toast" id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js"></script>
-<script type="module" src="./app.js?v=14"></script>
-<script type="module" src="./account.js?v=14"></script>
-<script type="module" src="./js/community.js?v=14"></script>
-<script type="module" src="./navigation-messages.js?v=14"></script>
-<script type="module" src="./homepage-flow.js?v=14"></script>
-<script type="module" src="./business37.js?v=14"></script>
-<script type="module" src="./social38.js?v=14"></script>
-<script type="module" src="./professional-activity.js?v=14"></script>
-<script type="module" src="./reports.js?v=14"></script>
-<script type="module" src="./admin-control.js?v=14"></script>
-<script type="module" src="./district-profile.js?v=14"></script>
-<script type="module" src="./owner-console.js?v=14"></script>
-<script type="module" src="./owner-district-multi.js?v=14"></script>
-<script>
-  (function(){
-    var done=false;
-    function reveal(){
-      if(done) return;
-      done=true;
-      var started=window.__copBootStart||performance.now();
-      var remaining=Math.max(0,850-(performance.now()-started));
-      setTimeout(function(){
-        document.body.classList.add('cop-ready');
-      },remaining);
-    }
-    window.addEventListener('load',reveal,{once:true});
-    setTimeout(reveal,8000);
-  })();
-</script>
+<script src="./bootstrap-resilient.js?v=15"></script>
 </body>
 </html>
