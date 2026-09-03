@@ -7,22 +7,50 @@
   <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
+  <link rel="preload" href="../fazja-preview/logo-chama-o-pro-transparent.png" as="image" type="image/png">
   <style>
+    *{box-sizing:border-box}
     html,body{margin:0;min-height:100%;background:linear-gradient(145deg,#0b555d,#073d44)}
-    body{min-height:100svh}
+    body{min-height:100svh;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .cop-opening{
+      position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;
+      background:linear-gradient(145deg,#0b555d,#073d44);opacity:1;visibility:visible;
+    }
+    .cop-opening-logo{
+      display:block;width:clamp(180px,46vw,260px);height:auto;
+      transform:scale(1);opacity:1;
+      animation:copOpeningPulse 1.12s ease-in-out infinite,copOpeningGlow 1.12s ease-in-out infinite;
+      will-change:transform,filter;
+    }
+    @keyframes copOpeningPulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.055)}
+    }
+    @keyframes copOpeningGlow{
+      0%,100%{filter:drop-shadow(0 12px 24px rgba(0,0,0,.24)) drop-shadow(0 0 7px rgba(67,235,229,.20))}
+      50%{filter:drop-shadow(0 16px 30px rgba(0,0,0,.30)) drop-shadow(0 0 28px rgba(67,235,229,.70))}
+    }
+    @media(prefers-reduced-motion:reduce){.cop-opening-logo{animation:none}}
   </style>
+</head>
+<body>
+  <div class="cop-opening" id="copOpening" aria-label="A abrir o Chama O Pro">
+    <img class="cop-opening-logo" src="../fazja-preview/logo-chama-o-pro-transparent.png" alt="Logótipo Chama O Pro" fetchpriority="high">
+  </div>
+  <noscript>O Chama O Pro precisa de JavaScript ativado para funcionar.</noscript>
   <script>
     (function(){
+      /* O loader interno mantém o mesmo logótipo durante pelo menos 850 ms.
+         3650 + 850 = 4500 ms de apresentação contínua do arranque. */
+      var PUBLIC_PHASE_MS=3650;
       var target=new URL('../fazja-preview/index.html',window.location.href);
       var source=new URL(window.location.href);
       source.searchParams.forEach(function(value,key){target.searchParams.append(key,value)});
       target.searchParams.set('cop_entry','1');
+      target.searchParams.set('boot','logo45');
       target.hash=source.hash;
-      window.location.replace(target.href);
+      setTimeout(function(){window.location.replace(target.href)},PUBLIC_PHASE_MS);
     })();
   </script>
-</head>
-<body>
-  <noscript>O Chama O Pro precisa de JavaScript ativado para funcionar.</noscript>
 </body>
 </html>
