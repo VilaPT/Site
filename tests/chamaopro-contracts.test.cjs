@@ -23,31 +23,44 @@ function mustMatch(source, pattern, message) {
   if (!pattern.test(source)) throw new Error(message);
 }
 
-check('Entrada oficial Chama O Pro existe e usa o logótipo correto', () => {
+check('Entrada oficial usa handoff direto e não reescreve o documento', () => {
   const source = file('chamaopro/index.html');
-  mustMatch(source, /logo-chama-o-pro-transparent\.png/, 'O loading deixou de usar o logótipo oficial.');
-  mustMatch(source, /\.\.\/fazja-preview\/index\.html/, 'A entrada estável da aplicação deixou de ser carregada.');
+  mustMatch(source, /\.\.\/fazja-preview\/index\.html/, 'A entrada oficial deixou de encaminhar para a aplicação real.');
+  mustMatch(source, /location\.replace/, 'O handoff direto deixou de usar navegação normal do browser.');
+  if (/document\.write|fetchApp\s*\(|document\.open\s*\(/.test(source)) {
+    throw new Error('O bootstrap voltou a reescrever o documento em runtime.');
+  }
 });
 
-check('Shell consolidado substitui apenas as camadas previstas', () => {
-  const source = file('chamaopro/index.html');
-  for (const token of ['shell-early.css', 'shell-late.css']) {
+check('Página real preserva URL canónica e cache-busting do arranque', () => {
+  const source = file('fazja-preview/index.html');
+  mustMatch(source, /<base href="\/Site\/fazja-preview\/">/, 'A base fixa dos recursos deixou de estar definida.');
+  mustMatch(source, /\/Site\/chamaopro\//, 'A página real deixou de restaurar a URL pública /chamaopro/.');
+  mustMatch(source, /cop_entry/, 'O marcador de handoff canónico desapareceu.');
+  for (const token of ['styles.css?v=14', 'app.js?v=14', 'account.js?v=14']) {
+    if (!source.includes(token)) throw new Error(`Versão de arranque em falta: ${token}`);
+  }
+});
+
+check('Shell consolidado é carregado diretamente pela página real', () => {
+  const source = file('fazja-preview/index.html');
+  for (const token of ['shell-early.css?v=14', 'shell-late.css?v=14']) {
     if (!source.includes(token)) throw new Error(`Bundle consolidado em falta: ${token}`);
   }
   for (const legacy of ['brand20.css', 'ux24.css', 'ux25.css', 'ux33.css', 'ux34.css']) {
-    if (source.includes(`'${legacy}'`)) throw new Error(`O loader continua a carregar ${legacy} diretamente.`);
+    if (source.includes(`./${legacy}`)) throw new Error(`A página real voltou a carregar ${legacy} diretamente.`);
   }
 });
 
 check('Homepage consolidada preserva o percurso categoria → serviço → localização', () => {
-  const entry = file('chamaopro/index.html');
+  const entry = file('fazja-preview/index.html');
   const source = file('fazja-preview/homepage-flow.js');
   const styles = file('fazja-preview/homepage-flow.css');
-  for (const token of ['homepage-flow.js', 'homepage-flow.css']) {
-    if (!entry.includes(token)) throw new Error(`Homepage consolidada em falta no loader: ${token}`);
+  for (const token of ['homepage-flow.js?v=14', 'homepage-flow.css?v=14']) {
+    if (!entry.includes(token)) throw new Error(`Homepage consolidada em falta: ${token}`);
   }
   for (const legacy of ['homepage36.js', 'homepage37.js', 'homepage36.css', 'homepage37.css']) {
-    if (entry.includes(`'${legacy}'`)) throw new Error(`O loader continua a carregar ${legacy} diretamente.`);
+    if (entry.includes(`./${legacy}`)) throw new Error(`A página real continua a carregar ${legacy} diretamente.`);
   }
   for (const token of ['prepareHomepageFlow', 'prepareChoiceFlow', 'decorateLocalServicesCategory', 'guideSelectedService', 'centerSelectedCategory']) {
     if (!source.includes(token)) throw new Error(`Comportamento da homepage em falta: ${token}`);
@@ -57,11 +70,11 @@ check('Homepage consolidada preserva o percurso categoria → serviço → local
 });
 
 check('Navegação e mensagens usam um módulo consolidado sem polling duplicado', () => {
-  const entry = file('chamaopro/index.html');
+  const entry = file('fazja-preview/index.html');
   const source = file('fazja-preview/navigation-messages.js');
-  if (!entry.includes('navigation-messages.js')) throw new Error('O loader não usa navigation-messages.js.');
+  if (!entry.includes('navigation-messages.js?v=14')) throw new Error('A página real não usa navigation-messages.js.');
   for (const legacy of ['enhancements26.js', 'navigation25.js']) {
-    if (entry.includes(`'${legacy}'`)) throw new Error(`O loader continua a carregar ${legacy} diretamente.`);
+    if (entry.includes(`./${legacy}`)) throw new Error(`A página real continua a carregar ${legacy} diretamente.`);
   }
   for (const token of ['navRequests', 'navPro', 'navMessages', 'navAccount', 'mark_user_message_thread_read', 'cop:notifications-refresh']) {
     if (!source.includes(token)) throw new Error(`Contrato de navegação/mensagens em falta: ${token}`);
@@ -70,10 +83,25 @@ check('Navegação e mensagens usam um módulo consolidado sem polling duplicado
   if (/setInterval\s*\(/.test(source)) throw new Error('navigation-messages.js voltou a criar polling periódico de notificações.');
 });
 
-check('Splash COP legado permanece neutralizado', () => {
-  const source = file('chamaopro/index.html') + '\n' + file('fazja-preview/shell-early.css');
-  mustMatch(source, /body::before\s*,?\s*body::after|body::before[\s\S]{0,100}body::after/, 'Falta proteção contra o splash legado.');
-  mustMatch(source, /content\s*:\s*none\s*!important/, 'O pseudo-elemento do splash legado pode voltar a aparecer.');
+check('Loader usa apenas o logótipo real e desaparece de forma suave', () => {
+  const styles = file('fazja-preview/styles.css');
+  const entry = file('fazja-preview/index.html');
+  mustMatch(styles, /logo-chama-o-pro-transparent\.png/, 'O loader deixou de usar o logótipo oficial.');
+  mustMatch(styles, /copLogoPulse/, 'A pulsação subtil do logótipo desapareceu.');
+  mustMatch(entry, /classList\.add\(['"]cop-ready['"]\)/, 'A transição de saída do loader deixou de ser acionada.');
+  if (/content:\s*['"]COP['"]|Profissionais perto de ti/.test(styles)) {
+    throw new Error('O splash legado com COP/texto voltou a existir.');
+  }
+});
+
+check('Todos os módulos adicionais críticos são carregados diretamente', () => {
+  const source = file('fazja-preview/index.html');
+  for (const token of [
+    'js/community.js?v=14','business37.js?v=14','social38.js?v=14','professional-activity.js?v=14',
+    'reports.js?v=14','admin-control.js?v=14','district-profile.js?v=14','owner-console.js?v=14','owner-district-multi.js?v=14'
+  ]) {
+    if (!source.includes(token)) throw new Error(`Módulo ativo em falta: ${token}`);
+  }
 });
 
 check('URL pública canónica aponta para /chamaopro/', () => {

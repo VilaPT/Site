@@ -6,8 +6,44 @@
   <meta name="theme-color" content="#0b555d">
   <meta name="description" content="Chama O Pro. Precisas. Encontras. Está feito.">
   <title>Chama O Pro | Precisas. Encontras. Está feito.</title>
-  <link rel="stylesheet" href="./styles.css?v=13">
-  <link rel="stylesheet" href="./account.css?v=13">
+  <base href="/Site/fazja-preview/">
+  <script>
+    window.__copBootStart=performance.now();
+    (function(){
+      var url=new URL(window.location.href);
+      if(url.searchParams.get('cop_entry')!=='1') return;
+      url.searchParams.delete('cop_entry');
+      var query=url.searchParams.toString();
+      history.replaceState(history.state,'','/Site/chamaopro/'+(query?'?'+query:'')+url.hash);
+    })();
+  </script>
+  <link rel="stylesheet" href="./styles.css?v=14">
+  <link rel="stylesheet" href="./account.css?v=14">
+  <link rel="stylesheet" href="./community18.css?v=14">
+  <link rel="stylesheet" href="./shell-early.css?v=14">
+  <link rel="stylesheet" href="./verification29.css?v=14">
+  <link rel="stylesheet" href="./profile30.css?v=14">
+  <link rel="stylesheet" href="./chat31.css?v=14">
+  <link rel="stylesheet" href="./appointment32.css?v=14">
+  <link rel="stylesheet" href="./shell-late.css?v=14">
+  <link rel="stylesheet" href="./directchat35.css?v=14">
+  <link rel="stylesheet" href="./homepage-flow.css?v=14">
+  <link rel="stylesheet" href="./business37.css?v=14">
+  <link rel="stylesheet" href="./social38.css?v=14">
+  <link rel="stylesheet" href="./professional-activity.css?v=14">
+  <link rel="stylesheet" href="./admin-control.css?v=14">
+  <link rel="stylesheet" href="./reports.css?v=14">
+  <link rel="stylesheet" href="./owner-console.css?v=14">
+  <link rel="stylesheet" href="./owner-district-multi.css?v=14">
+  <link rel="stylesheet" href="./auth-viewport.css?v=14">
+  <link rel="stylesheet" href="./pro-editor-viewport.css?v=14">
+  <style id="copBootOverride">
+    body::before,body::after{display:block!important;content:""!important}
+    body:not(.cop-ready)::before{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:copBootOverlayFallback .01s linear 10s forwards!important}
+    body:not(.cop-ready)::after{visibility:visible!important;opacity:1!important;animation:copLogoPulse 1.18s ease-in-out infinite,copBootLogoFallback .01s linear 10s forwards!important}
+    body.cop-ready::before{display:block!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;animation:none!important}
+    body.cop-ready::after{display:block!important;opacity:0!important;visibility:hidden!important;animation:none!important;transform:translate(-50%,-50%) scale(.985)!important}
+  </style>
   <style>
     .hero-story{max-width:760px!important}.hero-story strong{display:block;margin-top:8px;color:var(--petrol2);font-size:1.08em}.about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 18px}.about-card{background:#f8faf9;border:1px solid var(--line);border-radius:22px;padding:18px}.about-card strong{display:block;color:var(--petrol2);font-size:17px;margin-bottom:6px}.about-card span{color:var(--muted);font-size:14px;line-height:1.55}.faq-grid{display:grid;gap:9px;margin-top:12px}.faq-grid details{background:#f8faf9;border:1px solid var(--line);border-radius:18px;padding:0 16px}.faq-grid details[open]{background:#fff;border-color:var(--mid)}.faq-grid summary{cursor:pointer;list-style:none;font-weight:850;padding:15px 28px 15px 0;position:relative;color:var(--ink)}.faq-grid summary::-webkit-details-marker{display:none}.faq-grid summary:after{content:'+';position:absolute;right:2px;top:12px;font-size:23px;color:var(--petrol);font-weight:500}.faq-grid details[open] summary:after{content:'−'}.faq-grid details p{margin:0;padding:0 0 16px;color:var(--muted);font-size:14px;line-height:1.6}
     @media(max-width:720px){.nav-actions .ghost{display:inline-flex!important;align-items:center;justify-content:center}.nav-actions .account-btn{display:none!important}.nav-actions .btn{padding:9px 10px;font-size:12px}.nav{gap:8px}.nav-actions{gap:6px}.about-grid{grid-template-columns:1fr}}
@@ -59,7 +95,34 @@
 <datalist id="portugalPlaces"></datalist>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js"></script>
-<script type="module" src="./app.js?v=13"></script>
-<script type="module" src="./account.js?v=13"></script>
+<script type="module" src="./app.js?v=14"></script>
+<script type="module" src="./account.js?v=14"></script>
+<script type="module" src="./js/community.js?v=14"></script>
+<script type="module" src="./navigation-messages.js?v=14"></script>
+<script type="module" src="./homepage-flow.js?v=14"></script>
+<script type="module" src="./business37.js?v=14"></script>
+<script type="module" src="./social38.js?v=14"></script>
+<script type="module" src="./professional-activity.js?v=14"></script>
+<script type="module" src="./reports.js?v=14"></script>
+<script type="module" src="./admin-control.js?v=14"></script>
+<script type="module" src="./district-profile.js?v=14"></script>
+<script type="module" src="./owner-console.js?v=14"></script>
+<script type="module" src="./owner-district-multi.js?v=14"></script>
+<script>
+  (function(){
+    var done=false;
+    function reveal(){
+      if(done) return;
+      done=true;
+      var started=window.__copBootStart||performance.now();
+      var remaining=Math.max(0,850-(performance.now()-started));
+      setTimeout(function(){
+        document.body.classList.add('cop-ready');
+      },remaining);
+    }
+    window.addEventListener('load',reveal,{once:true});
+    setTimeout(reveal,8000);
+  })();
+</script>
 </body>
 </html>
