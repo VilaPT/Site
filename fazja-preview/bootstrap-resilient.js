@@ -6,21 +6,6 @@
     'https://unpkg.com/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js'
   ];
   const SCRIPT_TIMEOUT_MS=3000;
-  const modules=[
-    './app.js?v=15',
-    './account.js?v=15',
-    './js/community.js?v=15',
-    './navigation-messages.js?v=15',
-    './homepage-flow.js?v=15',
-    './business37.js?v=15',
-    './social38.js?v=15',
-    './professional-activity.js?v=15',
-    './reports.js?v=15',
-    './admin-control.js?v=15',
-    './district-profile.js?v=15',
-    './owner-console.js?v=15',
-    './owner-district-multi.js?v=15'
-  ];
 
   function hasSupabase(){
     return Boolean(window.supabase && typeof window.supabase.createClient==='function');
@@ -66,9 +51,19 @@
   }
 
   async function startModules(){
-    for(const specifier of modules){
-      await import(specifier);
-    }
+    await import('./app.js?v=15');
+    await import('./account.js?v=15');
+    await import('./js/community.js?v=15');
+    await import('./navigation-messages.js?v=15');
+    await import('./homepage-flow.js?v=15');
+    await import('./business37.js?v=15');
+    await import('./social38.js?v=15');
+    await import('./professional-activity.js?v=15');
+    await import('./reports.js?v=15');
+    await import('./admin-control.js?v=15');
+    await import('./district-profile.js?v=15');
+    await import('./owner-console.js?v=15');
+    await import('./owner-district-multi.js?v=15');
   }
 
   function reveal(){
