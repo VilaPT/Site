@@ -124,11 +124,14 @@ function updateSkillSummary() {
   const summary = $('proSkillsSummary');
   if (!summary) return;
   const count = selectedSkillCount();
-  summary.textContent = !count
+  const message = !count
     ? 'Seleciona pelo menos uma competência.'
     : count === 1
       ? '1 competência selecionada.'
       : `${count} competências selecionadas.`;
+  // This runs from the body childList observer. Even assigning the same text
+  // replaces its text node and would queue the observer forever.
+  if (summary.textContent !== message) summary.textContent = message;
 }
 
 function syncSkillChoices() {
@@ -138,7 +141,8 @@ function syncSkillChoices() {
   const options = new Map([...select.options].map((option) => [option.value, option]));
   grid.querySelectorAll('[data-pro-skill]').forEach((button) => {
     const option = options.get(button.dataset.proSkill);
-    button.setAttribute('aria-pressed', option?.selected ? 'true' : 'false');
+    const pressed = option?.selected ? 'true' : 'false';
+    if (button.getAttribute('aria-pressed') !== pressed) button.setAttribute('aria-pressed', pressed);
   });
   updateSkillSummary();
 }

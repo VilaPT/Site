@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const { styles, scripts } = require('./chamaopro-assets.json');
-const version = '20260917';
+const version = '20260917-2';
 let html = fs.readFileSync(path.join(root, 'fazja-preview/index.html'), 'utf8');
 html = html.replace(/<head>/i, `<head>
   <!-- Generated from ../fazja-preview/index.html by npm run build:chamaopro. -->
