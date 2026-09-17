@@ -15,7 +15,8 @@ async function ensureServiceWorker() {
     const pageUrl = new URL(window.location.href);
     if (!pageUrl.pathname.includes('/fazja/') && !pageUrl.pathname.includes('/chamaopro/')) return null;
     const swUrl = new URL('./sw.js', pageUrl).href;
-    return await navigator.serviceWorker.register(swUrl, { scope: './' });
+    // Resolve from the page, not document.baseURI (which points at fazja-preview).
+    return await navigator.serviceWorker.register(swUrl, { scope: new URL('./', pageUrl).href });
   } catch {
     return null;
   }

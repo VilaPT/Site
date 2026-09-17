@@ -57,7 +57,7 @@ check('Homepage consolidada preserva o percurso categoria → serviço → local
 });
 
 check('Splash COP legado permanece neutralizado', () => {
-  const source = file('chamaopro/index.html') + '\n' + file('fazja-preview/shell-early.css');
+  const source = file('chamaopro/boot.css') + '\n' + file('fazja-preview/shell-early.css');
   mustMatch(source, /body::before\s*,?\s*body::after|body::before[\s\S]{0,100}body::after/, 'Falta proteção contra o splash legado.');
   mustMatch(source, /content\s*:\s*none\s*!important/, 'O pseudo-elemento do splash legado pode voltar a aparecer.');
 });

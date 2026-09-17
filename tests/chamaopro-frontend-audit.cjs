@@ -3,7 +3,7 @@ const root=path.resolve(__dirname,'..'),preview=path.join(root,'fazja-preview');
 const read=p=>fs.readFileSync(p,'utf8'),clean=v=>String(v||'').split('#')[0].split('?')[0].replace(/^\.\//,'');
 const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
 const rel=f=>path.relative(preview,f).split(path.sep).join('/');
-const loader=read(path.join(root,'chamaopro','index.html')),html=read(path.join(preview,'index.html'));
+const loader=read(path.join(root,'chamaopro','index.html')),html=loader;
 function array(name){const m=loader.match(new RegExp(`const\\s+${name}\\s*=\\s*\\[([\\s\\S]*?)\\]`));return m?[...m[1].matchAll(/['"]([^'"]+)['"]/g)].map(x=>clean(x[1])):[]}
 function htmlAssets(){return [...html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)=["']\.\/([^"']+)["']/gi)].map(x=>clean(x[1])).filter(x=>/\.(js|css)$/i.test(x))}
 function deps(file,src){const out=[];if(file.endsWith('.js')){for(const re of[/(?:import|export)\s+(?:[^'";]*?\s+from\s*)?["']([^"']+)["']/g,/import\s*\(\s*["']([^"']+)["']/g])for(const m of src.matchAll(re))out.push(m[1])}else for(const m of src.matchAll(/@import\s+(?:url\()?\s*["']([^"']+)["']/g))out.push(m[1]);return out}
